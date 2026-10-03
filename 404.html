@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Moment — Not found</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#131212">
+<link rel="icon" type="image/svg+xml" href="/moment/assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;600&family=Noto+Serif+Georgian:wght@400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;1,8..60,400&display=swap">
+<style>
+  :root { color-scheme: dark; }
+  html, body { height: 100%; }
+  body {
+    margin: 0; display: grid; place-items: center; text-align: center; padding: 24px;
+    background: #131212; color: #F4ECDD;
+    font: 17px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans Georgian", sans-serif;
+  }
+  svg { width: 96px; height: 96px; margin: 0 auto 32px; overflow: visible; }
+  .l { fill: #E4633D; }
+  .r { fill: none; stroke: rgba(244, 236, 221, .35); stroke-width: 2; stroke-dasharray: 5 5; }
+  h1 { margin: 0; font: 400 clamp(34px, 6vw, 52px)/1.1 "Source Serif 4", "Noto Serif Georgian", Georgia, serif; letter-spacing: -.02em; }
+  h1 em { font-style: italic; color: #F5C66E; }
+  p { margin: 16px auto 32px; max-width: 30em; color: #ABA59B; }
+  a { display: inline-flex; align-items: center; height: 46px; padding: 0 22px; border-radius: 999px; background: #F4ECDD; color: #1A1411; font-weight: 600; text-decoration: none; }
+  html[lang="ka"] h1 em { font-style: normal; }
+  [lang="ka"].only { display: none; }
+  html[lang="ka"] [lang="en"].only { display: none; }
+  html[lang="ka"] [lang="ka"].only { display: block; }
+</style>
+<script>
+  (function () {
+    var lang = null;
+    try { lang = localStorage.getItem('moment.lang'); } catch (e) {}
+    if (lang !== 'ka' && lang !== 'en') lang = (navigator.languages || [navigator.language || 'en']).some(function (l) { return /^ka\b/i.test(l); }) ? 'ka' : 'en';
+    document.documentElement.lang = lang;
+  })();
+</script>
+</head>
+<body>
+<main>
+  <svg viewBox="0 0 100 100" aria-hidden="true"><path class="l" d="M45.5 4.5A40.5 40.5 0 0 0 45.5 85.5Z"/><path class="r" d="M54.5 14.5A40.5 40.5 0 0 1 54.5 95.5Z"/></svg>
+  <div class="only" lang="en">
+    <h1>This half never <em>arrived.</em></h1>
+    <p>The page you're looking for isn't here. It may have moved, or it was never shot.</p>
+    <a href="/moment/">Back to Moment</a>
+  </div>
+  <div class="only" lang="ka">
+    <h1>ეს ნახევარი არ <em>შემოსულა.</em></h1>
+    <p>გვერდი, რომელსაც ეძებთ, აქ არ არის. შეიძლება გადაიტანეს, ან არასდროს გადაუღიათ.</p>
+    <a href="/moment/">Moment-ზე დაბრუნება</a>
+  </div>
+</main>
+</body>
+</html>

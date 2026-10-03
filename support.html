@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" data-title-en="Moment — Support" data-title-ka="Moment — მხარდაჭერა">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Moment — Support</title>
+<meta name="description" content="Help with Moment: friends, duos, notifications, changing phones, deleting a duo or your account, and how to reach us.">
+<meta name="theme-color" content="#131212">
+<link rel="canonical" href="https://factorylabs.app/moment/support.html">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="icon" type="image/png" sizes="64x64" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;600&family=Noto+Serif+Georgian:wght@400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;1,8..60,400&display=swap">
+<link rel="stylesheet" href="assets/page.css">
+<script>
+  (function () {
+    var lang = null;
+    try { lang = new URLSearchParams(location.search).get('lang') || localStorage.getItem('moment.lang'); } catch (e) {}
+    if (lang !== 'ka' && lang !== 'en') {
+      var prefs = navigator.languages || [navigator.language || 'en'];
+      lang = prefs.some(function (l) { return /^ka\b/i.test(l); }) ? 'ka' : 'en';
+    }
+    document.documentElement.lang = lang;
+  })();
+</script>
+</head>
+<body>
+<header class="top">
+  <a class="wordmark" href="./" aria-label="Moment">
+    <svg class="mark" viewBox="0 0 100 100" aria-hidden="true"><path class="mark__l" d="M45.5 4.5A40.5 40.5 0 0 0 45.5 85.5Z"/><path class="mark__r" d="M54.5 14.5A40.5 40.5 0 0 1 54.5 95.5Z"/></svg>
+    <span>Moment</span>
+  </a>
+  <div class="lang" role="group" aria-label="Language">
+    <button type="button" data-lang="ka" lang="ka">ქარ</button>
+    <button type="button" data-lang="en" lang="en">EN</button>
+  </div>
+</header>
+
+<main>
+  <!-- English -->
+  <article class="only" lang="en">
+    <a class="back" href="./">← Moment</a>
+    <p class="eyebrow">Support</p>
+    <h1>How can we <em>help?</em></h1>
+    <p class="intro">The fastest way to reach us is from the app: <strong>Profile → Help &amp; feedback</strong>. Say what happened in your own words and add up to three screenshots — the app version and your phone go with it, so you don't have to look them up.</p>
+
+    <h2>Getting started</h2>
+    <details><summary>How do I add a friend?</summary><div><p>Open <strong>Friends</strong>, search for their username (two letters at least) and tap <strong>Add</strong>. They join your pool once they say yes. If they had already asked you, you're friends straight away.</p></div></details>
+    <details><summary>Why haven't I had a duo yet?</summary><div><p>A duo needs two. Moment only deals with friends in your pool who have opened the app in the last 12 hours, outside quiet hours, every hour or two. With no friends in your pool nothing is dealt — add one, and the first duo comes straight away.</p></div></details>
+    <details><summary>Why does my duo show a name instead of “? ? ? ? ?”</summary><div><p>Anonymity needs someone to hide among. With a single friend, every duo is with them, so the card names them. From two friends on, your partner stays anonymous until both halves are in.</p></div></details>
+
+    <h2>Duos</h2>
+    <details><summary>Can I retake my half?</summary><div><p>Yes — as often as you like while the clock runs. Once you confirm, your half is in.</p></div></details>
+    <details><summary>What happens if the clock runs out?</summary><div><p>Both halves are deleted, and a partner who never shot stays anonymous for good. The next duo comes along later.</p></div></details>
+    <details><summary>Can I save or share a duo?</summary><div><p>Yes. Open an unlocked duo and choose <strong>Save</strong> or <strong>Share</strong>. You get both halves stitched side by side.</p></div></details>
+    <details><summary>How do I delete a duo?</summary><div><p>Open it in <strong>Your duos</strong> and choose <strong>Delete for both of you</strong>. It's removed from both galleries and both photos are deleted. Your partner isn't told, and there's no undo.</p></div></details>
+
+    <h2>Notifications</h2>
+    <details><summary>I'm not getting notifications.</summary><div><p>Check that notifications are on for Moment in your phone's settings, and that it isn't inside your quiet hours (<strong>Profile → Settings → Quiet hours</strong>). On Android, battery savers can also hold notifications back.</p></div></details>
+    <details><summary>Can I get fewer duos — or more?</summary><div><p>Yes. On your profile, <strong>Duos a day</strong> goes from one to ten. Duos come at least an hour apart.</p></div></details>
+
+    <h2>Your account</h2>
+    <details><summary>How do I move to a new phone?</summary><div><p>On your old phone, connect Google — or Apple, on iPhone — in <strong>Settings → Connections</strong>. On the new phone, tap <strong>I already have an account</strong> and use the same account. Your old phone is signed out.</p></div></details>
+    <details><summary>How do I change my username?</summary><div><p>On your profile, tap your name.</p></div></details>
+    <details><summary>How do I remove a friend?</summary><div><p>Open their profile and choose <strong>Remove from pool</strong>. You won't be paired again. They aren't told, and the duos you made stay.</p></div></details>
+    <details><summary>How do I delete my account?</summary><div><p>On your profile, tap <strong>Delete account</strong>. Your account, your duos and every photo in them are deleted, for good — your friends' copies of your duos too.</p></div></details>
+
+    <div class="contact">
+      <h2>Still stuck?</h2>
+      <p>Write to us from the app, or by email. A person reads every message.</p>
+      <a class="big" href="mailto:support@imoment.app">support@imoment.app</a>
+    </div>
+    <p style="margin-top:28px"><a href="privacy.html">Privacy policy →</a></p>
+  </article>
+
+  <!-- ქართული -->
+  <article class="only" lang="ka">
+    <a class="back" href="./">← Moment</a>
+    <p class="eyebrow">მხარდაჭერა</p>
+    <h1>როგორ <em>დაგეხმაროთ?</em></h1>
+    <p class="intro">ჩვენთან დაკავშირების ყველაზე სწრაფი გზა აპშია: <strong>Profile → Help &amp; feedback</strong>. თქვენივე სიტყვებით აღწერეთ, რა მოხდა, და დაურთეთ სამამდე სქრინშოტი — აპის ვერსია და ტელეფონის მოდელი თავისით ერთვის, ასე რომ, მათი მოძებნა არ მოგიწევთ.</p>
+
+    <h2>დასაწყისი</h2>
+    <details><summary>როგორ დავამატო მეგობარი?</summary><div><p>გახსენით <strong>Friends</strong>, მოძებნეთ მისი მომხმარებლის სახელი (მინიმუმ ორი ასო) და შეეხეთ <strong>Add</strong>-ს. როგორც კი დაგეთანხმებათ, თქვენს წრეში აღმოჩნდება. თუ მან უკვე გამოგიგზავნათ მოთხოვნა, მეგობრები მაშინვე ხდებით.</p></div></details>
+    <details><summary>რატომ ჯერ არ მოსულა დუო?</summary><div><p>დუოს ორი სჭირდება. Moment დუოს მხოლოდ იმ მეგობრებთან გცემთ, ვინც ბოლო 12 საათში შემოვიდა აპში, წყნარი საათების გარეთ, ყოველ ერთ-ორ საათში. თუ წრეში მეგობარი არ გყავთ, არაფერი გაიცემა — დაამატეთ ერთი მაინც და პირველი დუო მაშინვე მოვა.</p></div></details>
+    <details><summary>რატომ ჩანს დუოში სახელი და არა „? ? ? ? ?“</summary><div><p>ანონიმურობისთვის რამდენიმე ადამიანი მაინც უნდა იყოს. თუ ერთი მეგობარი გყავთ, ყველა დუო მასთანაა, ამიტომ ბარათზე მისი სახელი წერია. ორი მეგობრიდან პარტნიორი ანონიმური რჩება, სანამ ორივე ნახევარი არ შემოვა.</p></div></details>
+
+    <h2>დუოები</h2>
+    <details><summary>შემიძლია ჩემი ნახევარი თავიდან გადავიღო?</summary><div><p>დიახ — იმდენჯერ, რამდენჯერაც გსურთ, სანამ დრო გადის. დადასტურების შემდეგ თქვენი ნახევარი შემოსულია.</p></div></details>
+    <details><summary>რა ხდება, როცა დრო ამოიწურება?</summary><div><p>ორივე ნახევარი იშლება, მეგობარი, რომელმაც ვერ გადაიღო, კი სამუდამოდ ანონიმური რჩება. შემდეგი დუო მოგვიანებით მოვა.</p></div></details>
+    <details><summary>შემიძლია დუო შევინახო ან გავაზიარო?</summary><div><p>დიახ. გახსენით გახსნილი დუო და აირჩიეთ <strong>Save</strong> ან <strong>Share</strong>. მიიღებთ ორივე ნახევარს, გვერდიგვერდ შეკრულს.</p></div></details>
+    <details><summary>როგორ წავშალო დუო?</summary><div><p>გახსენით ის <strong>Your duos</strong>-ში და აირჩიეთ <strong>Delete for both of you</strong>. დუო ორივე გალერეიდან ქრება და ორივე ფოტო იშლება. მეგობარს ამის შესახებ არ ეცნობება და დაბრუნება შეუძლებელია.</p></div></details>
+
+    <h2>შეტყობინებები</h2>
+    <details><summary>შეტყობინებები არ მომდის.</summary><div><p>შეამოწმეთ, ჩართულია თუ არა Moment-ის შეტყობინებები ტელეფონის პარამეტრებში და ხომ არ ხართ წყნარ საათებში (<strong>Profile → Settings → წყნარი საათები</strong>). Android-ზე შეტყობინებებს ბატარეის დაზოგვის რეჟიმიც აყოვნებს ხოლმე.</p></div></details>
+    <details><summary>შეიძლება ნაკლები ან მეტი დუო მივიღო?</summary><div><p>დიახ. პროფილში <strong>Duos a day</strong> ერთიდან ათამდე იცვლება. დუოებს შორის მინიმუმ ერთი საათია.</p></div></details>
+
+    <h2>თქვენი ანგარიში</h2>
+    <details><summary>როგორ გადავიტანო ანგარიში ახალ ტელეფონზე?</summary><div><p>ძველ ტელეფონზე დააკავშირეთ Google — ან iPhone-ზე Apple — აქ: <strong>Settings → კავშირები</strong>. ახალ ტელეფონზე შეეხეთ <strong>„უკვე მაქვს ანგარიში“</strong> და გამოიყენეთ იგივე ანგარიში. ძველ ტელეფონზე ანგარიშიდან გამოხვალთ.</p></div></details>
+    <details><summary>როგორ შევცვალო მომხმარებლის სახელი?</summary><div><p>პროფილში შეეხეთ თქვენს სახელს.</p></div></details>
+    <details><summary>როგორ წავშალო მეგობარი?</summary><div><p>გახსენით მისი პროფილი და აირჩიეთ <strong>Remove from pool</strong>. წყვილში აღარ მოხვდებით. მას ამის შესახებ არ ეცნობება, თქვენი საერთო დუოები კი რჩება.</p></div></details>
+    <details><summary>როგორ წავშალო ანგარიში?</summary><div><p>პროფილში შეეხეთ <strong>ანგარიშის წაშლას</strong>. სამუდამოდ წაიშლება თქვენი ანგარიში, თქვენი დუოები და მათში არსებული ყველა ფოტო — მათ შორის თქვენი დუოების ასლები მეგობრებთან.</p></div></details>
+
+    <div class="contact">
+      <h2>ისევ გაქვთ კითხვა?</h2>
+      <p>მოგვწერეთ აპიდან ან ელფოსტით. ყველა წერილს ადამიანი კითხულობს.</p>
+      <a class="big" href="mailto:support@imoment.app">support@imoment.app</a>
+    </div>
+    <p style="margin-top:28px"><a href="privacy.html">კონფიდენციალურობის პოლიტიკა →</a></p>
+  </article>
+</main>
+
+<footer>
+  <a href="./" class="only" lang="en">Moment</a><a href="./" class="only" lang="ka">Moment</a>
+  <a href="privacy.html" class="only" lang="en">Privacy policy</a><a href="privacy.html" class="only" lang="ka">კონფიდენციალურობის პოლიტიკა</a>
+  <a href="https://factorylabs.app/">Factory Labs</a>
+  <span>© 2026 Factory Labs</span>
+</footer>
+<script src="assets/page.js"></script>
+</body>
+</html>
