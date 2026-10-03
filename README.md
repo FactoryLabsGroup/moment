@@ -23,8 +23,8 @@ A static site with no build step:
 
 ## Store links
 
-Moment isn't live in the stores yet, so both badges say *Coming soon*. When it
-is, set the links at the top of `assets/app.js`:
+Moment isn't live in the stores yet, so both halves of the store pair say
+*Coming soon*. When it is, set the links at the top of `assets/app.js`:
 
 ```js
 var STORE = {
@@ -33,8 +33,9 @@ var STORE = {
 };
 ```
 
-Every badge on the page becomes a download link, and the last section says
-Moment is in the stores.
+Each half of the pair (App Store in persimmon, Google Play in cobalt, the mark
+on the seam between them) becomes a download link everywhere on the page, and
+the last section says Moment is in the stores.
 
 ## Languages
 
@@ -47,27 +48,42 @@ word. Georgian is never uppercased, and painted words aren't set in italics.
 
 ## What the site is built from
 
-The site says what the app says and looks the way the app looks:
+The page is built the way the app is: solid colour on a charcoal wall, and
+everything decorative cut from one circle. It says what the app says and
+looks the way the app looks:
 
-- **Colours** are the app's: the charcoal canvas, the solids (`Whim` in
-  `Moment/UI/Theme/Colors.swift`), the deck's ten hues (`DeckHues.swift`), and
-  the same rule for ivory or near-black ink on each.
+- **Colours** are the app's (`Whim` in `Moment/UI/Theme/Colors.swift`), and
+  they mean what they mean there: persimmon is you, cobalt your partner,
+  saffron waiting on somebody, emerald done. The three steps of a duo are
+  posters in those colours, in that order. Ink on every solid is ivory or
+  near-black, whichever contrasts more.
+- **Type** follows `Typography.swift`: the serif carries the moments, the sans
+  says what the page says about itself, and the mono names things in spaced
+  capitals, as the tab bar does.
 - **The mark** is drawn from `MarkGeometry` in `Brand.swift`: one circle cut in
-  two, the left half a touch up.
-- **The hero's mosaic** is the empty deck's (`HalvesMosaic.swift`): tiles that
-  turn a quarter now and then, and a tap that blows them apart while the line
-  under them changes.
-- **How it works** plays the intro tour (`docs/ANDROID.md` § 1 in moment-ios):
-  the draw, the shot, the unlock.
-- **The challenges** are real ones from the server's deck, with their framing
-  and tip, painted by the deck's colour rule. The Georgian is ours: the server
-  sends challenges in English.
-- **The filters** use the app's colour matrices, vignettes and scanlines
-  (`docs/FILTERS.md` in moment-android).
+  two, the left half a touch up. The hero sets it large and cuts the headline,
+  the lede and the store pair along the same seam. Now and then (or on a tap)
+  the halves develop a duo.
+- **The posters' figures** are the app's ornaments (`CardOrnament`): a
+  half-disc, a quarter-disc or a circle pressed into the colour at a whisper.
+- **The ping** is the duo's push (`DuoMessage` in moment-backend) and its
+  clock, a ring that empties with it.
+- **The moment** is the unlock's spread (`UnlockedScreen`): the colour above
+  the fold, the pair across it, the seam with the mark in a dark disc, and the
+  burst (`HalvesBurst`).
+- **The deck** deals real challenges from the server, with their framing, tip
+  and filter, painted by the deck's colour rule (`DeckHues.swift`). The
+  Georgian is ours: the server sends challenges in English.
+- **The wall** hangs prints the way the gallery does (`GalleryScreen`): two
+  halves on a mat of one colour, every other column dropped. Filters use the
+  app's colour matrices (`docs/FILTERS.md` in moment-android).
+- **The end** is the empty Friends tab (`PoolArt`): your half, an empty one,
+  and everyone who could fill it.
 - **Privacy** claims come from the server (moment-backend `docs/SECURITY.md`,
   the store and the backup script). Change the policy when they change.
 
-Real duos are private, so the page never shows one: every photo is drawn.
+Real duos are private, so the page never shows one: every photo is drawn
+(`assets/scenes.js`).
 
 ## Running locally
 

@@ -1,117 +1,72 @@
+/* Moment — everything on the page that moves, and every word in both languages. */
 (function () {
   'use strict';
 
   // ---------------------------------------------------------------------------
   // Store links. Paste each one in once Moment is live there, and its
-  // "Coming soon" badge becomes a download link everywhere on the page.
+  // "Coming soon" half becomes a download link everywhere on the page.
   // ---------------------------------------------------------------------------
   var STORE = {
-    appStore: '',   // e.g. 'https://apps.apple.com/app/id0000000000'
-    googlePlay: ''  // e.g. 'https://play.google.com/store/apps/details?id=app.imoment'
+    appStore: '',
+    googlePlay: ''
   };
 
   var root = document.documentElement;
   var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var narrow = window.matchMedia('(max-width: 920px)');
   var SCENES = window.MOMENT_SCENES;
 
   // ---------------------------------------------------------------------------
   // Copy. English is the source; Georgian is written alongside it: polite
-  // plural, no letter case, „…“ quotes. Where the app already has a Georgian
-  // line (the tour, the username screen, Connections), it is used word for word.
-  // `*stars*` mark painted words.
+  // plural, no letter case, „…“ quotes. `*stars*` mark painted words and
+  // `\n` breaks a line.
   // ---------------------------------------------------------------------------
   var STRINGS = {
     en: {
       page_title: 'Moment — Two halves. One moment.',
       skip: 'Skip to content',
-      nav_how: 'How it works', nav_challenges: 'Challenges', nav_filters: 'Filters', nav_privacy: 'Privacy', nav_get: 'Get Moment',
-      hero_kicker: 'For iPhone and Android',
-      hero_random: 'Random', hero_w1: 'friend.', hero_w2: 'challenge.', hero_w3: 'moment.',
-      hero_title_a11y: 'Random friend. Random challenge. Random moment.',
-      hero_lede: 'Moment pairs you with a friend at a random moment and gives you both the same challenge and the same short clock. You each shoot your half — and nobody sees a thing until both are in.',
+      nav_a11y: 'Sections', nav_how: 'How it works', nav_deck: 'Challenges', nav_privacy: 'Privacy', nav_get: 'Get Moment',
+      hero_a11y: 'Two halves. One moment.', hero_l: 'Two halves.', hero_r: 'One moment.',
+      hero_mark_a11y: 'Show a duo',
+      lede_l: 'A random friend, a random challenge, at a random moment.',
+      lede_r: 'You each shoot your half — and nobody sees a thing until both are in.',
       hero_note: 'Just a username. No email, no password.',
-      store_apple_small: 'Download on the', store_google_small: 'Get it on', store_soon: 'Coming soon to', store_soon_label: '%s — coming soon',
-      mosaic_hint: 'Tap the mosaic', mosaic_a11y: 'Shuffle the mosaic',
-      push_time: 'now', push_title: '5 minutes. Go.', push_body: 'Duo with someone',
-      ticker_a11y: 'Challenges from the deck',
-      how_kicker: 'How it works', how_title: 'One duo, <em>three beats.</em>',
-      step_1: 'Dealt', step_2: 'Shoot', step_3: 'Unlock', steps_a11y: 'Steps',
-      s1_title: 'A friend and a challenge, <em>at a random moment.</em>',
-      s1_text: "Sometime today, Moment picks a friend from your pool and a challenge neither of you has had lately, and tells you both at once. You won't know which friend it is — you both get the same challenge, and the same clock.",
-      s2_title: 'Shoot <em>your half.</em> They shoot <em>theirs.</em>',
-      s2_text: "Open the camera before the clock runs out and retake as often as you like. Nobody sees a thing — not even who you're paired with — until both halves are in.",
-      s3_title: 'Two <em>halves.</em> One <em>moment.</em>',
-      s3_text: 'The moment the second half lands, the duo unlocks for both of you: two photos clicked into one — a memory that belongs to just the two of you. Now you see who it was.',
-      how_miss: "And if one of you doesn't make it in time? Both halves are deleted, and your partner stays anonymous — for good.",
-      tour_dealt: ['*Random* friend.', '*Random* challenge.', '*Random* moment.'],
-      tour_dealt_msg: "You won't know which friend it is. You both get the same challenge.",
-      tour_shoot: 'Shoot *your half.*\nThey shoot *theirs.*',
-      tour_shoot_msg: "Nobody sees a thing — not even who you're paired with — until both halves are in.",
-      tour_unlock: 'Two *halves.*\nOne *moment.*',
-      tour_unlock_msg: 'They click into one photo — a memory that belongs to just the two of you.',
-      tour_next: 'Next', tour_start: 'Get started',
-      tour_dare: 'Something red.', tour_dare_label: 'Challenge', tour_you: 'You', tour_partner: 'Nika',
-      tour_unlocked: 'Unlocked', tour_names: 'You & Nika', tour_push_sub: 'Duo with someone',
-      rule_kicker: 'The one rule',
-      rule_title: 'Nobody sees a thing <em>until both halves are in.</em>',
-      rule_lede: "That's the whole product. Everything else in Moment is there to keep that promise.",
-      card_duo_with: 'Duo with', card_someone: 'Someone', card_example: 'Example', card_shoot: 'Shoot your half',
-      card_how: 'How to shoot it', card_framing: 'Framing', card_tip: 'Tip', card_back: 'Back to the card', card_you: 'Y',
-      card_a11y: '%s — tap to see how to shoot it',
-      r1_title: 'Anonymous until the unlock',
-      r1_text: "Your partner shows as ? ? ? ? ? — no name, no photo, not even an initial. Their half isn't even sent to your phone until the duo unlocks.",
-      r2_title: 'Missed means gone',
-      r2_text: "If the clock runs out first, both halves are deleted from our server — not hidden, deleted. Whoever didn't shoot stays a mystery for good.",
-      r3_title: 'Only people you said yes to',
-      r3_text: 'Every duo comes from your own pool: friends who asked and were accepted, both ways. Nobody browses you, nobody follows you.',
-      r4_title: "With one friend, it's them — by name",
-      r4_text: "Anonymity needs someone to hide among. With a single friend, every duo is with them and the card says so. From two friends on, it's a surprise.",
-      ch_kicker: 'The challenges',
-      ch_title: 'Say <em>yes</em> to the <em>weird</em> challenge.',
-      ch_lede: "Faces, streets, food, pets, light, chaos. Every challenge can be shot wherever you happen to be, and it's worth seeing twice: once as your half, once as theirs.",
+      store_soon_small: 'Coming soon', store_apple_small: 'Download on the', store_google_small: 'Get it on',
+      dare: 'Challenge',
+      ping_label: 'The ping', ping_title: 'Same challenge.\nSame clock.',
+      ping_text: "Sometime today, Moment picks a friend from your pool and sends you both the same challenge at the same moment. You won't know which friend — only that the clock has started.",
+      ping_a11y: 'Deal another challenge',
+      duo_with: 'Duo with', push_now: 'now', push_go: '%s minutes. Go.', push_go_one: 'One minute. Go.',
+      sealed_label: 'Your half', sealed_title: 'Shoot your half.\nTheirs stays sealed.',
+      sealed_text: "Open the camera wherever you are and retake as often as you like. Nobody sees a thing — not even who you're paired with — until both halves are in.",
+      sealed_a11y: 'Shoot again', sealed_chip: 'Sealed', sealed_sent: 'Sent', sealed_wait: 'Waiting…', you: 'You',
+      open_label: 'The moment', open_title: 'Both halves in.\nNow you see.',
+      open_text: 'The second half lands and the two click into one photo — a memory that belongs to just the two of you. Only now do you find out who it was.',
+      open_miss: 'Miss the clock, and both halves are deleted. Your partner stays a mystery for good.',
+      open_a11y: 'Unlock another duo', unlocked: 'Unlocked',
+      deck_label: 'The deck', deck_title: 'Some sweet.\nSome spicy.\n*Some deadly.*',
+      deck_text: '150 challenges across faces, streets, food, pets, light and chaos — every one shootable wherever you happen to be. Some come with a look, like NOIR or X‑RAY, so both halves match.',
+      levels_a11y: 'Level',
       lv_sweet: 'Sweet', lv_spicy: 'Spicy', lv_deadly: 'Deadly',
       lv_sweet_t: "Arm's reach — a face, something on your desk.",
       lv_spicy_t: "You'll have to move, or set something up.",
       lv_deadly_t: 'Needs another person, nerve, or timing.',
-      lv_note: "Levels open as you finish duos. Choose how far you'll go on your profile.",
-      deal_next: 'Deal another', deal_hint: 'Tap a card to see how to shoot it',
-      st_challenges: 'challenges', st_categories: 'categories', st_levels: 'levels to earn', st_filters: 'filters',
-      fl_kicker: 'Filters',
-      fl_title: 'Some challenges come with <em>a look.</em>',
-      fl_lede: "It's the challenge's, not a choice: both halves are shot through the same one, so the pair matches. You see it live in the camera, and it's baked into the photo on your phone.",
-      fl_from: 'Handed out by', fl_none: 'No filter', fl_none_line: 'Most challenges come as they are.', fl_none_from: 'most of the deck',
-      du_kicker: 'Your duos',
-      du_title: 'Every duo is a tiny <em>time capsule.</em>',
-      du_lede: "Finished duos hang in both your galleries, stitched side by side. Look back and you'll find a year of small, odd, perfect moments — each one with a different friend.",
-      du_p1: "One reaction each — 🔥 😂 💀 👏 — and that's all",
-      du_p2: 'Save the stitched pair to your photos, or share it',
-      du_p3: 'Either of you can delete a duo, for both of you',
-      pa_kicker: 'Pacing',
-      pa_title: 'It fits around <em>your day.</em>',
-      pa_lede: 'A duo comes every hour or two, at a random moment — never a flood. Start with four a day and choose anything from one to ten. Quiet hours keep your nights yours.',
-      pa_per_day: 'Duos a day', pa_fewer: 'Fewer', pa_more: 'More', pa_shuffle: 'Another day', pa_quiet: 'Quiet hours',
-      pa_hours: 'hours', pa_hours_short: 'h',
-      pa_f1: 'between duos, at random',
-      pa_f2: 'duos a day — four to start, you choose',
-      pa_f3: 'quiet hours by default, or your own range',
-      pa_f4: "only friends who've opened Moment lately — a duo needs two",
-      no_kicker: 'What Moment is not',
+      lv_note: 'Levels open as you finish duos. Choose how far you’ll go on your profile.',
+      deal_hint: 'Tap or swipe for another', card_a11y: '%s — next card',
+      wall_label: 'Your wall', wall_title: 'Every duo that made it,\nhung on your wall.',
+      wall_text: "Finished duos hang in both your galleries, side by side, each on a mat of its own colour. One reaction each — 🔥 😂 💀 👏 — and that's all.",
+      pv_label: 'Just the two of you', pv_a11y: 'What Moment is not',
       no_1: 'No feed.', no_2: 'No likes.', no_3: 'No followers.', no_4: 'No streaks.', no_5: 'No ads.',
-      no_end: 'Just two people and <em>one photo.</em>',
-      no_sub: 'No browsing, no discovery, no scores. A friend exists here only through the duos you two finished.',
-      pv_kicker: 'Your account',
-      pv_title: 'Just a username. <em>No password.</em>',
+      no_end: 'Just two people and *one photo.*',
       pv1_t: 'No email, no password',
       pv1_x: "Pick a username — it's how friends find you. Connect Apple or Google, and a new phone signs straight back in.",
       pv2_t: 'Photos under lock',
-      pv2_x: 'Each photo is encrypted on our server under its own key, stripped of location and camera data, and only ever sent to the two of you, through links that expire.',
+      pv2_x: 'Each photo is encrypted on our server under its own key, stripped of location and camera data, and only ever sent to the two of you.',
       pv3_t: 'No ads, no trackers',
       pv3_x: 'No analytics, no ad SDKs, no third-party storage. A push carries one short line and nothing else.',
       pv4_t: 'Leave whenever you like',
       pv4_x: 'Delete a duo for both of you, or your whole account, right from the app — the photos go with it.',
       pv_link: 'Read the privacy policy',
-      fq_kicker: 'Questions', fq_title: 'Good to <em>know.</em>', fq_more: 'Something else?', fq_support: 'Visit support',
+      fq_label: 'Questions', fq_title: 'Good to know.', fq_more: 'Something else?', fq_support: 'Visit support',
       q1: "Can I choose who I'm paired with?",
       a1: "No — that's the fun. Moment picks someone from your pool, preferring whoever you were paired with least recently, so it keeps changing.",
       q2: 'Can my partner see my photo before they shoot?',
@@ -126,113 +81,59 @@
       a6: "Connect Google — or Apple, on iPhone — in Settings → Connections. On the new phone, tap “I already have an account” and you're back, with every duo.",
       q7: 'Who can see my duos?',
       a7: "Only you and the friend you made each one with. There's no feed and no public profile — nothing for anyone to browse.",
-      fi_title: 'Somewhere, a friend is about to <em>smile.</em>',
-      fi_text_soon: 'Moment is coming to iPhone and Android.',
-      fi_text_live: 'Moment is on the App Store and Google Play.',
-      footer_privacy: 'Privacy policy', footer_support: 'Support', footer_copy: '© 2026 Factory Labs',
-      months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-      deck_lines: [
-        'Two *halves.*\nOne *moment.*',
-        'Laugh first.\n*Explain later.*',
-        'Some memories only\ncome in *pairs.*',
-        'Half the fun is\n*not knowing.*',
-        'Say *yes* to\nthe *weird* challenge.',
-        'Two cameras.\nOne *inside joke.*',
-        'Good *friends.*\nBetter *stories.*',
-        'Every duo is a\ntiny *time capsule.*',
-        "It's always more fun\n*with two.*"
-      ]
+      pool_a11y: 'Pick the other half',
+      fi_title: 'A moment takes *two.*',
+      fi_soon: 'Moment is coming to iPhone and Android. Bring a friend.',
+      fi_live: 'Moment is on the App Store and Google Play. Bring a friend.',
+      foot_a11y: 'More', footer_privacy: 'Privacy policy', footer_support: 'Support', footer_copy: '© 2026 Factory Labs',
+      months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
     },
     ka: {
       page_title: 'Moment — ორი ნახევარი. ერთი მომენტი.',
       skip: 'შინაარსზე გადასვლა',
-      nav_how: 'როგორ მუშაობს', nav_challenges: 'გამოწვევები', nav_filters: 'ფილტრები', nav_privacy: 'კონფიდენციალურობა', nav_get: 'ჩამოტვირთვა',
-      hero_kicker: 'iPhone-სა და Android-ზე',
-      hero_random: 'შემთხვევითი', hero_w1: 'მეგობარი.', hero_w2: 'გამოწვევა.', hero_w3: 'მომენტი.',
-      hero_title_a11y: 'შემთხვევითი მეგობარი. შემთხვევითი გამოწვევა. შემთხვევითი მომენტი.',
-      hero_lede: 'Moment შემთხვევით მომენტში გაწყვილებთ მეგობართან და ორივეს ერთსა და იმავე გამოწვევას გაძლევთ — ერთი და იმავე მოკლე დროით. თქვენ თქვენს ნახევარს გადაიღებთ, მეგობარი — თავისას, და სანამ ორივე არ შემოვა, ვერავინ ვერაფერს ხედავს.',
+      nav_a11y: 'სექციები', nav_how: 'როგორ მუშაობს', nav_deck: 'გამოწვევები', nav_privacy: 'კონფიდენციალურობა', nav_get: 'ჩამოტვირთვა',
+      hero_a11y: 'ორი ნახევარი. ერთი მომენტი.', hero_l: 'ორი ნახევარი.', hero_r: 'ერთი მომენტი.',
+      hero_mark_a11y: 'დუოს ჩვენება',
+      lede_l: 'შემთხვევითი მეგობარი, შემთხვევითი გამოწვევა, შემთხვევით მომენტში.',
+      lede_r: 'თქვენ თქვენს ნახევარს იღებთ, მეგობარი — თავისას. სანამ ორივე არ შემოვა, ვერავინ ვერაფერს ხედავს.',
       hero_note: 'მხოლოდ მომხმარებლის სახელი — არც ელფოსტა, არც პაროლი.',
-      store_apple_small: 'ჩამოტვირთეთ', store_google_small: 'ჩამოტვირთეთ', store_soon: 'მალე', store_soon_label: '%s — მალე',
-      mosaic_hint: 'შეეხეთ მოზაიკას', mosaic_a11y: 'მოზაიკის არევა',
-      push_time: 'ახლა', push_title: '5 წუთი. დროა.', push_body: 'ვიღაცასთან ერთად',
-      ticker_a11y: 'გამოწვევები დასტიდან',
-      how_kicker: 'როგორ მუშაობს', how_title: 'ერთი დუო, <em>სამი ნაბიჯი.</em>',
-      step_1: 'შერჩევა', step_2: 'გადაღება', step_3: 'გახსნა', steps_a11y: 'ნაბიჯები',
-      s1_title: 'მეგობარი და გამოწვევა — <em>შემთხვევით მომენტში.</em>',
-      s1_text: 'დღის რომელიღაც მომენტში Moment თქვენი წრიდან ირჩევს მეგობარს და ისეთ გამოწვევას, რომელიც ბოლო დროს არცერთს არ შეგხვედრიათ, და ორივეს ერთდროულად გატყობინებთ. არ იცით, რომელი მეგობარია — ორივე ერთსა და იმავე გამოწვევას და ერთსა და იმავე დროს იღებთ.',
-      s2_title: '<em>თქვენი</em> ნახევარი. <em>მისი</em> ნახევარი.',
-      s2_text: 'გახსენით კამერა, სანამ დრო ამოიწურება, და გადაიღეთ იმდენჯერ, რამდენჯერაც გსურთ. ვერავინ ვერაფერს ხედავს — ვერც იმას, ვისთან ერთად ხართ — სანამ ორივე ნახევარი არ შემოვა.',
-      s3_title: 'ორი <em>ნახევარი.</em> ერთი <em>მომენტი.</em>',
-      s3_text: 'როგორც კი მეორე ნახევარი შემოვა, დუო ორივესთვის იხსნება: ორი ფოტო ერთად ერთიანდება — მოგონებად, რომელიც მხოლოდ თქვენ ორს გეკუთვნით. ახლა უკვე ხედავთ, ვინ იყო.',
-      how_miss: 'და თუ რომელიმე ვერ მოასწრებს? ორივე ნახევარი წაიშლება, მეგობარი კი სამუდამოდ ანონიმური დარჩება.',
-      tour_dealt: ['*შემთხვევითი* მეგობარი.', '*შემთხვევითი* გამოწვევა.', '*შემთხვევითი* მომენტი.'],
-      tour_dealt_msg: 'არ იცით, რომელი მეგობარია. ორივე ერთსა და იმავე გამოწვევას იღებთ.',
-      tour_shoot: '*თქვენი* ნახევარი.\n*მისი* ნახევარი.',
-      tour_shoot_msg: 'ვერავინ ვერაფერს ხედავს — ვერც იმას, ვისთან ერთად ხართ — სანამ ორივე ნახევარი არ შემოვა.',
-      tour_unlock: 'ორი *ნახევარი.*\nერთი *მომენტი.*',
-      tour_unlock_msg: 'ნახევრები ერთ ფოტოდ ერთიანდება — მოგონებად, რომელიც მხოლოდ თქვენ ორს გეკუთვნით.',
-      tour_next: 'შემდეგი', tour_start: 'დაწყება',
-      tour_dare: 'რაღაც წითელი.', tour_dare_label: 'გამოწვევა', tour_you: 'თქვენ', tour_partner: 'ნიკა',
-      tour_unlocked: 'გაიხსნა', tour_names: 'თქვენ და ნიკა', tour_push_sub: 'ვიღაცასთან ერთად',
-      rule_kicker: 'ერთადერთი წესი',
-      rule_title: 'ვერავინ ვერაფერს ხედავს, <em>სანამ ორივე ნახევარი არ შემოვა.</em>',
-      rule_lede: 'ეს არის მთელი აპი. Moment-ში ყველაფერი დანარჩენი ამ დაპირების შესანარჩუნებლად არსებობს.',
-      card_duo_with: 'დუო', card_someone: 'ვიღაცასთან', card_example: 'მაგალითი', card_shoot: 'გადაიღეთ თქვენი ნახევარი',
-      card_how: 'როგორ გადავიღოთ', card_framing: 'კადრი', card_tip: 'რჩევა', card_back: 'ბარათზე დაბრუნება', card_you: 'თ',
-      card_a11y: '%s — შეეხეთ და ნახეთ, როგორ გადაიღოთ',
-      r1_title: 'ანონიმური გახსნამდე',
-      r1_text: 'მეგობარი ასე ჩანს: ? ? ? ? ? — არც სახელი, არც ფოტო, არც ინიციალი. მისი ნახევარი თქვენს ტელეფონზე არც კი იგზავნება, სანამ დუო არ გაიხსნება.',
-      r2_title: 'გაცდენილი — წაშლილია',
-      r2_text: 'თუ დრო ადრე ამოიწურა, ორივე ნახევარი ჩვენი სერვერიდან იშლება — არა იმალება, იშლება. ვინც ვერ გადაიღო, სამუდამოდ საიდუმლოდ რჩება.',
-      r3_title: 'მხოლოდ ისინი, ვისაც დათანხმდით',
-      r3_text: 'ყოველი დუო თქვენი წრიდან მოდის: ადამიანებიდან, რომლებმაც მოთხოვნა გამოგიგზავნეს და დაეთანხმეთ, ან პირიქით. ვერავინ გათვალიერებთ და ვერავინ გამოგიწერთ.',
-      r4_title: 'ერთ მეგობართან — სახელით',
-      r4_text: 'ანონიმურობისთვის რამდენიმე ადამიანი მაინც უნდა იყოს. თუ ერთი მეგობარი გყავთ, ყველა დუო მასთანაა და ბარათზე მისი სახელიც წერია. ორი მეგობრიდან უკვე სიურპრიზია.',
-      ch_kicker: 'გამოწვევები',
-      ch_title: 'უთხარით <em>დიახ</em> <em>უცნაურ</em> გამოწვევას.',
-      ch_lede: 'სახეები, ქუჩები, საჭმელი, ცხოველები, სინათლე, ქაოსი. ყოველი გამოწვევის გადაღება იქვე შეგიძლიათ, სადაც ხართ, და მისი ორჯერ ნახვა ღირს: ერთხელ — თქვენი ნახევრით, ერთხელ — მეგობრისით.',
+      store_soon_small: 'მალე', store_apple_small: 'ჩამოტვირთეთ', store_google_small: 'ჩამოტვირთეთ',
+      dare: 'გამოწვევა',
+      ping_label: 'შეტყობინება', ping_title: 'იგივე გამოწვევა.\nიგივე დრო.',
+      ping_text: 'დღის რომელიღაც მომენტში Moment თქვენი წრიდან ირჩევს მეგობარს და ორივეს ერთდროულად ერთსა და იმავე გამოწვევას უგზავნის. არ იცით, რომელი მეგობარია — მხოლოდ ის, რომ დრო უკვე მიდის.',
+      ping_a11y: 'სხვა გამოწვევა',
+      duo_with: 'პარტნიორი', push_now: 'ახლა', push_go: '%s წუთი. დროა.', push_go_one: 'ერთი წუთი. დროა.',
+      sealed_label: 'თქვენი ნახევარი', sealed_title: 'გადაიღეთ თქვენი.\nმისი დალუქულია.',
+      sealed_text: 'გახსენით კამერა, სადაც არ უნდა იყოთ, და გადაიღეთ იმდენჯერ, რამდენჯერაც გსურთ. ვერავინ ვერაფერს ხედავს — ვერც იმას, ვისთან ერთად ხართ — სანამ ორივე ნახევარი არ შემოვა.',
+      sealed_a11y: 'თავიდან გადაღება', sealed_chip: 'დალუქულია', sealed_sent: 'გაიგზავნა', sealed_wait: 'მოლოდინში…', you: 'თქვენ',
+      open_label: 'მომენტი', open_title: 'ორივე ნახევარი შემოვიდა.\nახლა ხედავთ.',
+      open_text: 'მეორე ნახევარი შემოდის და ორივე ერთ ფოტოდ ერთიანდება — მოგონებად, რომელიც მხოლოდ თქვენ ორს გეკუთვნით. მხოლოდ ახლა იგებთ, ვინ იყო.',
+      open_miss: 'თუ დრო ამოიწურა, ორივე ნახევარი წაიშლება, მეგობარი კი სამუდამოდ საიდუმლოდ დარჩება.',
+      open_a11y: 'სხვა დუოს გახსნა', unlocked: 'გაიხსნა',
+      deck_label: 'დასტა', deck_title: 'ზოგი ტკბილია.\nზოგი ცხარე.\n*ზოგი სასიკვდილო.*',
+      deck_text: '150 გამოწვევა — სახეები, ქუჩები, საჭმელი, ცხოველები, სინათლე და ქაოსი. თითოეულის გადაღება იქვე შეგიძლიათ, სადაც ხართ. ზოგს თავისი იერი ახლავს — მაგალითად, NOIR ან X‑RAY — რომ ორივე ნახევარი ერთმანეთს ერგებოდეს.',
+      levels_a11y: 'დონე',
       lv_sweet: 'ტკბილი', lv_spicy: 'ცხარე', lv_deadly: 'სასიკვდილო',
       lv_sweet_t: 'ხელის გაწვდენაზე — სახე, რაღაც თქვენს მაგიდაზე.',
       lv_spicy_t: 'მოგიწევთ ადგილიდან დაძვრა ან რაღაცის მომზადება.',
       lv_deadly_t: 'სჭირდება სხვა ადამიანი, გამბედაობა ან ზუსტი დრო.',
       lv_note: 'დონეები დუოების დასრულებასთან ერთად იხსნება. პროფილში აირჩიეთ, რამდენად შორს წახვალთ.',
-      deal_next: 'სხვა გამოწვევა', deal_hint: 'შეეხეთ ბარათს და ნახეთ, როგორ გადაიღოთ',
-      st_challenges: 'გამოწვევა', st_categories: 'კატეგორია', st_levels: 'გასახსნელი დონე', st_filters: 'ფილტრი',
-      fl_kicker: 'ფილტრები',
-      fl_title: 'ზოგ გამოწვევას <em>თავისი იერი</em> აქვს.',
-      fl_lede: 'ფილტრი გამოწვევას ეკუთვნის და არა თქვენს არჩევანს: ორივე ნახევარი ერთი და იმავე ფილტრით იღება, რომ წყვილი ერთმანეთს ერგებოდეს. მას კამერაშივე ხედავთ და ფოტოს თქვენსავე ტელეფონზე ედება.',
-      fl_from: 'გამოწვევა:', fl_none: 'ფილტრის გარეშე', fl_none_line: 'გამოწვევების უმეტესობა ფილტრის გარეშეა.', fl_none_from: 'დასტის უმეტესობა',
-      du_kicker: 'თქვენი დუოები',
-      du_title: 'ყოველი დუო — პატარა <em>დროის კაფსულაა.</em>',
-      du_lede: 'დასრულებული დუოები ორივეს გალერეაში ჩნდება, გვერდიგვერდ შეკრული. გადახედავთ და დაინახავთ მთელ წელს, სავსეს პატარა, უცნაური, სრულყოფილი მომენტებით — თითოეული სხვადასხვა მეგობართან.',
-      du_p1: 'თითო რეაქცია — 🔥 😂 💀 👏 — და მეტი არაფერი',
-      du_p2: 'შეინახეთ შეკრული წყვილი ფოტოებში ან გააზიარეთ',
-      du_p3: 'დუოს წაშლა ორივეს შეუძლია — ორივესთვის',
-      pa_kicker: 'რიტმი',
-      pa_title: 'ის <em>თქვენს დღეს</em> ერგება.',
-      pa_lede: 'დუო ყოველ ერთ-ორ საათში, შემთხვევით მომენტში მოდის — არასდროს ერთბაშად. დაიწყეთ დღეში ოთხით და აირჩიეთ ნებისმიერი რაოდენობა ერთიდან ათამდე. წყნარი საათები ღამეს თქვენვე გიტოვებთ.',
-      pa_per_day: 'დუო დღეში', pa_fewer: 'ნაკლები', pa_more: 'მეტი', pa_shuffle: 'სხვა დღე', pa_quiet: 'წყნარი საათები',
-      pa_hours: 'საათი', pa_hours_short: 'სთ',
-      pa_f1: 'დუოებს შორის, შემთხვევით',
-      pa_f2: 'დუო დღეში — თავიდან ოთხი, მერე თქვენ ირჩევთ',
-      pa_f3: 'წყნარი საათები ნაგულისხმევად, ან თქვენი შუალედი',
-      pa_f4: 'მხოლოდ მეგობრები, ვინც ახლახან შემოვიდა Moment-ში — დუოს ორი სჭირდება',
-      no_kicker: 'რა არ არის Moment',
+      deal_hint: 'შეეხეთ ან გადაწიეთ', card_a11y: '%s — შემდეგი ბარათი',
+      wall_label: 'თქვენი კედელი', wall_title: 'ყოველი დუო, რომელიც შედგა,\nთქვენს კედელზე კიდია.',
+      wall_text: 'დასრულებული დუოები ორივეს გალერეაში კიდია, გვერდიგვერდ, თითოეული — თავისი ფერის პასპარტუზე. თითო რეაქცია — 🔥 😂 💀 👏 — და მეტი არაფერი.',
+      pv_label: 'მხოლოდ თქვენ ორნი', pv_a11y: 'რა არ არის Moment',
       no_1: 'არანაირი ლენტა.', no_2: 'არანაირი ლაიქი.', no_3: 'არანაირი გამომწერი.', no_4: 'არანაირი სერია.', no_5: 'არანაირი რეკლამა.',
-      no_end: 'მხოლოდ ორი ადამიანი და <em>ერთი ფოტო.</em>',
-      no_sub: 'არც დათვალიერება, არც ქულები. მეგობარი აქ მხოლოდ იმ დუოებით არსებობს, რომლებიც ერთად დაასრულეთ.',
-      pv_kicker: 'თქვენი ანგარიში',
-      pv_title: 'მხოლოდ სახელი. <em>პაროლის გარეშე.</em>',
+      no_end: 'მხოლოდ ორი ადამიანი და *ერთი ფოტო.*',
       pv1_t: 'არც ელფოსტა, არც პაროლი',
       pv1_x: 'აირჩიეთ მომხმარებლის სახელი — ამით გიპოვიან მეგობრები. დააკავშირეთ Apple ან Google და ახალ ტელეფონზე ყველაფერს დაიბრუნებთ.',
       pv2_t: 'ფოტოები დაცულია',
-      pv2_x: 'ყოველი ფოტო ჩვენს სერვერზე საკუთარი გასაღებით არის დაშიფრული, მდებარეობისა და კამერის მონაცემები მოცილებულია და მხოლოდ თქვენ ორს მიეწოდება ბმულებით, რომლებსაც ვადა გასდის.',
+      pv2_x: 'ყოველი ფოტო ჩვენს სერვერზე საკუთარი გასაღებით არის დაშიფრული, მდებარეობისა და კამერის მონაცემები მოცილებულია და მხოლოდ თქვენ ორს მიეწოდება.',
       pv3_t: 'არც რეკლამა, არც თვალთვალი',
       pv3_x: 'არც ანალიტიკა, არც სარეკლამო SDK-ები, არც მესამე მხარის საცავი. შეტყობინება მხოლოდ ერთ მოკლე ფრაზას შეიცავს.',
       pv4_t: 'წასვლა ნებისმიერ დროს',
       pv4_x: 'წაშალეთ დუო ორივესთვის ან მთელი ანგარიში პირდაპირ აპიდან — ფოტოებიც მასთან ერთად წაიშლება.',
       pv_link: 'კონფიდენციალურობის პოლიტიკა',
-      fq_kicker: 'კითხვები', fq_title: 'კარგია, <em>რომ იცოდეთ.</em>', fq_more: 'სხვა კითხვა გაქვთ?', fq_support: 'მხარდაჭერა',
+      fq_label: 'კითხვები', fq_title: 'კარგია, რომ იცოდეთ.', fq_more: 'სხვა კითხვა გაქვთ?', fq_support: 'მხარდაჭერა',
       q1: 'შემიძლია ავირჩიო, ვისთან ვიქნები წყვილში?',
       a1: 'არა — სწორედ ესაა ხიბლი. Moment თქვენი წრიდან ირჩევს და უპირატესობას ანიჭებს მას, ვისთანაც ყველაზე დიდი ხანია წყვილში არ ყოფილხართ, ასე რომ, პარტნიორი სულ იცვლება.',
       q2: 'ხედავს თუ არა მეგობარი ჩემს ფოტოს, სანამ თავად გადაიღებს?',
@@ -247,22 +148,12 @@
       a6: 'დააკავშირეთ Google — ან iPhone-ზე Apple — პარამეტრებში, „კავშირებში“. ახალ ტელეფონზე შეეხეთ „უკვე მაქვს ანგარიში“ და ყველა დუოსთან ერთად დაბრუნდებით.',
       q7: 'ვინ ხედავს ჩემს დუოებს?',
       a7: 'მხოლოდ თქვენ და მეგობარი, ვისთანაც თითოეული შექმენით. არ არსებობს ლენტა ან საჯარო პროფილი — დასათვალიერებელი არაფერია.',
-      fi_title: 'სადღაც მეგობარს ახლა <em>გაეღიმება.</em>',
-      fi_text_soon: 'Moment მალე გამოვა iPhone-სა და Android-ზე.',
-      fi_text_live: 'Moment უკვე App Store-სა და Google Play-ზეა.',
-      footer_privacy: 'კონფიდენციალურობის პოლიტიკა', footer_support: 'მხარდაჭერა', footer_copy: '© 2026 Factory Labs',
-      months: ['იან', 'თებ', 'მარ', 'აპრ', 'მაი', 'ივნ', 'ივლ', 'აგვ', 'სექ', 'ოქტ', 'ნოე', 'დეკ'],
-      deck_lines: [
-        'ორი *ნახევარი.*\nერთი *მომენტი.*',
-        'ჯერ *იცინეთ.*\nახსნა *მერე.*',
-        'ზოგი მოგონება\nმხოლოდ *წყვილად* მოდის.',
-        'მთელი ხიბლი\n*არცოდნაშია.*',
-        'უთხარით *დიახ*\n*უცნაურ* გამოწვევას.',
-        'ორი კამერა.\nერთი *საერთო ხუმრობა.*',
-        'კარგი *მეგობრები.*\nუკეთესი *ამბები.*',
-        'ყოველი დუო —\nპატარა *დროის კაფსულა.*',
-        'ორად ყოველთვის\n*უფრო სახალისოა.*'
-      ]
+      pool_a11y: 'მეორე ნახევრის არჩევა',
+      fi_title: 'მომენტს *ორი* სჭირდება.',
+      fi_soon: 'Moment მალე გამოვა iPhone-სა და Android-ზე. მოიყვანეთ მეგობარი.',
+      fi_live: 'Moment უკვე App Store-სა და Google Play-ზეა. მოიყვანეთ მეგობარი.',
+      foot_a11y: 'მეტი', footer_privacy: 'კონფიდენციალურობის პოლიტიკა', footer_support: 'მხარდაჭერა', footer_copy: '© 2026 Factory Labs',
+      months: ['იან', 'თებ', 'მარ', 'აპრ', 'მაი', 'ივნ', 'ივლ', 'აგვ', 'სექ', 'ოქტ', 'ნოე', 'დეკ']
     }
   };
 
@@ -453,7 +344,7 @@
   // Helpers
   // ---------------------------------------------------------------------------
   var lang = root.lang === 'ka' ? 'ka' : 'en';
-  var L = function () { return lang === 'ka' ? 1 : 0; };
+  function L() { return lang === 'ka' ? 1 : 0; }
   function t(key) { var s = STRINGS[lang][key]; return s != null ? s : STRINGS.en[key]; }
   function fill(template, value) { return String(template).replace('%s', value); }
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
@@ -469,35 +360,57 @@
       return ((r ^ r >>> 14) >>> 0) / 4294967296;
     };
   }
-  // "*painted* words" → <em>, line breaks kept; each word wrapped so it can rise on its own.
-  function painted(text, words) {
-    return text.split('\n').map(function (line) {
-      var out = [], parts = line.split(/(\*[^*]+\*)/);
-      parts.forEach(function (part) {
-        if (!part) return;
-        var em = part.charAt(0) === '*';
-        var body = em ? part.slice(1, -1) : part;
-        if (!words) { out.push(em ? '<em>' + esc(body) + '</em>' : esc(body)); return; }
-        body.split(/(\s+)/).forEach(function (w) {
-          if (!w) return;
-          if (/^\s+$/.test(w)) { out.push(' '); return; }
-          out.push('<span class="w">' + (em ? '<em>' + esc(w) + '</em>' : esc(w)) + '</span>');
-        });
-      });
-      return out.join('');
+  // "*painted* words" → <em>, and "\n" → a line break.
+  function painted(text) {
+    return String(text).split('\n').map(function (line) {
+      return line.split(/(\*[^*]+\*)/).map(function (part) {
+        return part.charAt(0) === '*' ? '<em>' + esc(part.slice(1, -1)) + '</em>' : esc(part);
+      }).join('');
     }).join('<br>');
   }
-  function staggerWords(el, base, step) {
-    $$('.w', el).forEach(function (w, i) { w.style.animationDelay = (base + i * step) + 'ms'; });
-  }
+  // A drawn photo, with a challenge's filter run through it when it has one.
   function scene(name, v, fx) {
     var html = SCENES[name](v || 0);
     var open = html.indexOf('>') + 1, close = html.lastIndexOf('</svg>');
-    return html.slice(0, open) + '<g class="fx"' + (fx ? ' filter="url(#' + filterId(fx) + ')"' : '') + '>' + html.slice(open, close) + '</g></svg>';
+    return html.slice(0, open) + '<g' + (fx ? ' filter="url(#' + filterId(fx) + ')"' : '') + '>' + html.slice(open, close) + '</g></svg>';
+  }
+  // The same, placed inside another drawing at x, y, w, h.
+  function sceneAt(name, v, fx, box) {
+    return scene(name, v, fx).replace('<svg ', '<svg x="' + box[0] + '" y="' + box[1] + '" width="' + box[2] + '" height="' + box[3] + '" ');
+  }
+  function fxLayers(fx) {
+    var f = fx && FILTERS.filter(function (x) { return x.key === fx; })[0];
+    if (!f) return '';
+    return (f.vig ? '<i class="fx-vig" style="opacity:' + f.vig + '"></i>' : '') + (f.lines ? '<i class="fx-lines"></i>' : '');
   }
   var MARK_L = 'M45.5 4.5A40.5 40.5 0 0 0 45.5 85.5Z';
   var MARK_R = 'M54.5 14.5A40.5 40.5 0 0 1 54.5 95.5Z';
   function markSvg() { return '<svg class="mark" viewBox="0 0 100 100" aria-hidden="true"><path class="mark__l" d="' + MARK_L + '"/><path class="mark__r" d="' + MARK_R + '"/></svg>'; }
+  var SEAM = '<div class="seam" aria-hidden="true"><i class="seam__line"></i><i class="seam__disc">' +
+    '<svg viewBox="0 0 100 100"><path d="' + MARK_L + '" fill="#E4633D"/><path d="' + MARK_R + '" fill="#4A68E8"/></svg></i></div>';
+
+  // Run `start` while an element is on screen, and `stop` when it leaves.
+  function whileVisible(el, start, stop, margin) {
+    if (!el) return;
+    if (!('IntersectionObserver' in window)) { start(); return; }
+    var on = false;
+    new IntersectionObserver(function (entries) {
+      var now = entries[entries.length - 1].isIntersecting;
+      if (now === on) return;
+      on = now;
+      if (on) start(); else if (stop) stop();
+    }, { rootMargin: margin || '0px', threshold: 0.2 }).observe(el);
+  }
+  function restart(el, cls) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
+  function play(el, frames, opts) { return el && el.animate && !still ? el.animate(frames, opts) : null; }
+
+  // The filters as SVG: the phones' own matrices, offsets moved to a 0–1 scale.
+  $('#filterDefs').innerHTML = FILTERS.map(function (f) {
+    var v = [];
+    for (var r = 0; r < 3; r++) v.push(f.m[r * 5], f.m[r * 5 + 1], f.m[r * 5 + 2], f.m[r * 5 + 3], +(f.m[r * 5 + 4] / 255).toFixed(5));
+    v.push(0, 0, 0, 1, 0);
+    return '<filter id="' + filterId(f.key) + '" color-interpolation-filters="sRGB" x="0" y="0" width="100%" height="100%"><feColorMatrix type="matrix" values="' + v.join(' ') + '"/></filter>';
+  }).join('');
 
   // ---------------------------------------------------------------------------
   // Language
@@ -506,914 +419,566 @@
   function applyStrings() {
     document.title = t('page_title');
     $$('[data-i18n]').forEach(function (el) { el.textContent = t(el.getAttribute('data-i18n')); });
-    $$('[data-i18n-html]').forEach(function (el) { el.innerHTML = t(el.getAttribute('data-i18n-html')); });
+    $$('[data-i18n-p]').forEach(function (el) { el.innerHTML = painted(t(el.getAttribute('data-i18n-p'))); });
     $$('[data-i18n-aria]').forEach(function (el) { el.setAttribute('aria-label', t(el.getAttribute('data-i18n-aria'))); });
-    $$('.lang button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.lang === lang)); });
+    $$('.lang button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-lang') === lang)); });
     onLanguage.forEach(function (fn) { fn(); });
   }
   function setLanguage(next) {
     if (next === lang) return;
     lang = next;
-    root.lang = lang;
-    try { localStorage.setItem('moment.lang', lang); } catch (e) {}
+    root.lang = next;
+    try { localStorage.setItem('moment.lang', next); } catch (e) {}
     try {
       var url = new URL(location.href);
-      if (url.searchParams.has('lang')) { url.searchParams.set('lang', lang); history.replaceState(null, '', url); }
+      if (url.searchParams.has('lang')) { url.searchParams.set('lang', next); history.replaceState(null, '', url); }
     } catch (e) {}
     applyStrings();
   }
-  $$('.lang button').forEach(function (b) { b.addEventListener('click', function () { setLanguage(b.dataset.lang); }); });
+  $$('.lang button').forEach(function (b) {
+    b.addEventListener('click', function () { setLanguage(b.getAttribute('data-lang')); });
+  });
 
   // ---------------------------------------------------------------------------
-  // Store badges
+  // The stores, as a pair: the App Store is your half, Google Play theirs.
   // ---------------------------------------------------------------------------
-  var APPLE_GLYPH = '<svg class="store__glyph" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.37 12.64c-.02-2.3 1.88-3.4 1.96-3.46-1.07-1.56-2.73-1.78-3.32-1.8-1.41-.14-2.76.83-3.47.83-.72 0-1.82-.81-3-.79-1.54.02-2.96.9-3.76 2.28-1.6 2.78-.41 6.9 1.15 9.15.76 1.1 1.67 2.34 2.86 2.3 1.15-.05 1.58-.74 2.97-.74 1.38 0 1.77.74 2.98.72 1.23-.02 2.01-1.12 2.76-2.23.87-1.28 1.23-2.52 1.25-2.58-.03-.01-2.4-.92-2.42-3.66zM14.1 5.9c.63-.77 1.06-1.83.94-2.9-.91.04-2.02.61-2.67 1.37-.58.67-1.1 1.76-.96 2.8 1.02.08 2.06-.52 2.69-1.27z"/></svg>';
-  var PLAY_GLYPH = '<svg class="store__glyph" viewBox="0 0 24 24" aria-hidden="true"><path fill="#00D7FE" d="M3.6 2.3c-.3.3-.4.8-.4 1.3v16.8c0 .5.1 1 .4 1.3l.1.1 9.4-9.4v-.2L3.7 2.2z"/><path fill="#FFCE00" d="m16.2 15.5-3.1-3.1v-.2l3.1-3.1.1.1 3.7 2.1c1.1.6 1.1 1.6 0 2.2l-3.7 2.1z"/><path fill="#FF3A44" d="M16.3 15.4 13.1 12.3l-9.5 9.4c.4.4.9.4 1.6.1l11.1-6.4"/><path fill="#00F076" d="M16.3 9.2 5.2 2.8c-.7-.4-1.2-.3-1.6.1l9.5 9.4z"/></svg>';
-  function storeBadge(url, glyph, small, name) {
-    if (url) {
-      return '<a class="store" href="' + esc(url) + '" target="_blank" rel="noopener">' + glyph +
-        '<span class="store__text"><small>' + esc(small) + '</small><strong>' + name + '</strong></span></a>';
-    }
-    return '<span class="store is-soon" role="img" aria-label="' + esc(fill(t('store_soon_label'), name)) + '">' + glyph +
-      '<span class="store__text" aria-hidden="true"><small>' + esc(t('store_soon')) + '</small><strong>' + name + '</strong></span></span>';
+  var APPLE = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.37 12.64c-.02-2.3 1.88-3.4 1.96-3.46-1.07-1.56-2.73-1.78-3.32-1.8-1.41-.14-2.76.83-3.47.83-.72 0-1.82-.81-3-.79-1.54.02-2.96.9-3.76 2.28-1.6 2.78-.41 6.9 1.15 9.15.76 1.1 1.67 2.34 2.86 2.3 1.15-.05 1.58-.74 2.97-.74 1.38 0 1.77.74 2.98.72 1.23-.02 2.01-1.12 2.76-2.23.87-1.28 1.23-2.52 1.25-2.58-.03-.01-2.4-.92-2.42-3.66zM14.1 5.9c.63-.77 1.06-1.83.94-2.9-.91.04-2.02.61-2.67 1.37-.58.67-1.1 1.76-.96 2.8 1.02.08 2.06-.52 2.69-1.27z"/></svg>';
+  var PLAY = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#00D7FE" d="M3.6 2.3c-.3.3-.4.8-.4 1.3v16.8c0 .5.1 1 .4 1.3l.1.1 9.4-9.4v-.2L3.7 2.2z"/><path fill="#FFCE00" d="m16.2 15.5-3.1-3.1v-.2l3.1-3.1.1.1 3.7 2.1c1.1.6 1.1 1.6 0 2.2l-3.7 2.1z"/><path fill="#FF3A44" d="M16.3 15.4 13.1 12.3l-9.5 9.4c.4.4.9.4 1.6.1l11.1-6.4"/><path fill="#00F076" d="M16.3 9.2 5.2 2.8c-.7-.4-1.2-.3-1.6.1l9.5 9.4z"/></svg>';
+  function storeHalf(side, url, glyph, small, name) {
+    var inner = glyph + '<span><small>' + esc(url ? small : t('store_soon_small')) + '</small>' + name + '</span>';
+    return url
+      ? '<a class="pair__half pair__half--' + side + '" href="' + esc(url) + '" target="_blank" rel="noopener">' + inner + '</a>'
+      : '<span class="pair__half pair__half--' + side + '">' + inner + '</span>';
   }
   function renderStores() {
-    var html = storeBadge(STORE.appStore, APPLE_GLYPH, t('store_apple_small'), 'App Store') +
-      storeBadge(STORE.googlePlay, PLAY_GLYPH, t('store_google_small'), 'Google Play');
+    var html = storeHalf('l', STORE.appStore, APPLE, t('store_apple_small'), 'App Store') +
+      storeHalf('r', STORE.googlePlay, PLAY, t('store_google_small'), 'Google Play') +
+      '<i class="pair__seam" aria-hidden="true">' + markSvg() + '</i>';
     $$('[data-stores]').forEach(function (el) { el.innerHTML = html; });
-    var live = STORE.appStore && STORE.googlePlay;
-    var finale = $('#finaleText');
-    finale.setAttribute('data-i18n', live ? 'fi_text_live' : 'fi_text_soon');
-    finale.textContent = t(live ? 'fi_text_live' : 'fi_text_soon');
+    var live = !!(STORE.appStore && STORE.googlePlay);
+    $('#finaleText').textContent = t(live ? 'fi_live' : 'fi_soon');
   }
   onLanguage.push(renderStores);
 
   // ---------------------------------------------------------------------------
-  // Nav
+  // The bar firms up once the page moves.
   // ---------------------------------------------------------------------------
-  var nav = $('#nav');
-  function onScroll() { nav.classList.toggle('is-solid', window.scrollY > 24); }
+  var bar = $('#bar');
+  function onScroll() { bar.classList.toggle('is-solid', window.scrollY > 8); }
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
-  // Run a callback while an element is on screen, and stop it when it leaves.
-  function whileVisible(el, start, stop, margin) {
-    if (!('IntersectionObserver' in window)) { start(); return; }
-    var on = false;
-    new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (en.isIntersecting && !on) { on = true; start(); }
-        else if (!en.isIntersecting && on) { on = false; stop(); }
-      });
-    }, { rootMargin: margin || '0px' }).observe(el);
+  // ---------------------------------------------------------------------------
+  // The burst (HalvesBurst): halves and quarters thrown out from a point —
+  // a quick push out, a slow drift down, gone in under two seconds.
+  // ---------------------------------------------------------------------------
+  var BURST_COLOURS = ['#E4633D', '#E8A33A', '#4A68E8', '#22A273', '#9147A8', '#F2B8A6', '#F4ECDD'];
+  function burst(host, reach, count, scale) {
+    if (still || !host || !host.animate) return;
+    scale = scale || 1;
+    for (var i = 0; i < (count || 46); i++) {
+      var quarter = Math.random() < 0.35;
+      var size = (9 + Math.random() * 14) * scale;
+      var w = quarter ? size * 0.8 : size / 2, h = quarter ? size * 0.8 : size;
+      var el = document.createElement('i');
+      el.style.width = w + 'px';
+      el.style.height = h + 'px';
+      el.style.margin = (-h / 2) + 'px 0 0 ' + (-w / 2) + 'px';
+      var colour = BURST_COLOURS[Math.floor(Math.random() * BURST_COLOURS.length)];
+      el.innerHTML = quarter
+        ? '<svg viewBox="0 0 100 100"><path d="M0 0H100A100 100 0 0 1 0 100Z" fill="' + colour + '"/></svg>'
+        : '<svg viewBox="0 0 50 100"><path d="M50 0A50 50 0 0 0 50 100Z" fill="' + colour + '"/></svg>';
+      host.appendChild(el);
+      var a = Math.random() * Math.PI * 2, d = reach * (0.3 + Math.random() * 0.7);
+      var x = Math.cos(a) * d, y = Math.sin(a) * d, spin = (Math.random() - 0.5) * 540, fall = reach * (0.05 + Math.random() * 0.15);
+      var r0 = Math.random() * 360;
+      el.animate([
+        { transform: 'translate(0,0) rotate(' + r0 + 'deg) scale(.3)', opacity: 1 },
+        { transform: 'translate(' + x * 0.82 + 'px,' + y * 0.82 + 'px) rotate(' + (r0 + spin * 0.45) + 'deg) scale(1)', opacity: 1, offset: 0.3 },
+        { transform: 'translate(' + x + 'px,' + (y + fall) + 'px) rotate(' + (r0 + spin) + 'deg) scale(.85)', opacity: 0 }
+      ], { duration: 1500 + Math.random() * 400, easing: 'cubic-bezier(.12,.75,.3,1)' }).onfinish = (function (node) { return function () { node.remove(); }; })(el);
+    }
   }
 
   // ---------------------------------------------------------------------------
-  // Hero: "Random" stays, the word after it takes turns (TourTurns).
+  // Hero: the mark glides together, and now and then (or on a tap) develops
+  // a duo — two photos of the same challenge, one in each half.
   // ---------------------------------------------------------------------------
-  (function heroTurns() {
-    var slot = $('#heroSlot');
-    var keys = ['hero_w1', 'hero_w2', 'hero_w3'];
-    var at = 0, timer = null;
-    function paint() { slot.innerHTML = '<span class="turns__word is-on">' + esc(t(keys[at])) + '</span>'; }
-    function turn() {
-      var old = $('.turns__word.is-on', slot);
-      at = (at + 1) % keys.length;
-      var word = document.createElement('span');
-      word.className = 'turns__word';
-      word.textContent = t(keys[at]);
-      slot.appendChild(word);
-      if (old) { old.classList.remove('is-on'); old.classList.add('is-off'); setTimeout(function () { old.remove(); }, 400); }
-      requestAnimationFrame(function () { requestAnimationFrame(function () { word.classList.add('is-on'); }); });
+  var DUOS = [
+    { a: ['apple', 0], b: ['balloon', 0], c: 0, who: 1 },
+    { a: ['sky', 0], b: ['sky', 1], c: 3, who: 9 },
+    { a: ['cat', 0], b: ['cat', 1], c: 5, who: 3 },
+    { a: ['sea', 0], b: ['sea', 1], c: 17, who: 0 },
+    { a: ['shadow', 0], b: ['shadow', 1], c: 2, fx: 'NOIR', who: 6 },
+    { a: ['pizza', 0], b: ['pizza', 1], c: 9, who: 5 },
+    { a: ['door', 0], b: ['door', 1], c: 19, who: 7 },
+    { a: ['silhouette', 0], b: ['silhouette', 1], c: 15, fx: 'NOIR', who: 2 }
+  ];
+  (function hero() {
+    var section = $('#top'), mark = $('#heroMark'), dare = $('#heroDare');
+    var photoL = $('#heroPhotoL'), photoR = $('#heroPhotoR');
+    var halves = $$('.bigmark__half', mark), host = $('.burst', mark);
+    var k = 0, current = null, auto = null, hide = null;
+    var GLARE = '<rect class="glare" width="100" height="100"/>';
+
+    function caption() {
+      if (current) dare.innerHTML = '<b>' + esc(t('dare')) + '</b>' + esc(CHALLENGES[current.c].t[L()]);
     }
-    function start() { stop(); timer = setTimeout(function loop() { turn(); timer = setTimeout(loop, 2200); }, 2600); }
-    function stop() { clearTimeout(timer); }
-    onLanguage.push(paint);
-    whileVisible($('#heroTitle'), start, stop);
+    function develop() {
+      current = DUOS[k % DUOS.length]; k++;
+      photoL.innerHTML = sceneAt(current.a[0], current.a[1], current.fx, [5, 4.5, 40.5, 81]) + GLARE;
+      photoR.innerHTML = sceneAt(current.b[0], current.b[1], current.fx, [54.5, 14.5, 40.5, 81]) + GLARE;
+      caption();
+      restart(mark, 'is-photo');
+      play($('.glare', photoL), [{ opacity: 0.92 }, { opacity: 0 }], { duration: 1500, easing: 'ease-out', fill: 'both' });
+      play($('.glare', photoR), [{ opacity: 0.92 }, { opacity: 0 }], { duration: 1500, delay: 260, easing: 'ease-out', fill: 'both' });
+      // The halves clap together, and a few of the mark's pieces puff out of the join.
+      play(halves[0], [{ transform: 'translateX(0)' }, { transform: 'translateX(-5px)', offset: 0.4 }, { transform: 'translateX(0)' }], { duration: 560, easing: 'cubic-bezier(.5,0,.3,1)' });
+      play(halves[1], [{ transform: 'translateX(0)' }, { transform: 'translateX(5px)', offset: 0.4 }, { transform: 'translateX(0)' }], { duration: 560, easing: 'cubic-bezier(.5,0,.3,1)' });
+      setTimeout(function () { burst(host, mark.offsetWidth * 0.75, 34, mark.offsetWidth / 420); }, 330);
+      clearTimeout(hide);
+      hide = setTimeout(function () { mark.classList.remove('is-photo'); }, 4200);
+    }
+    function loop() { clearInterval(auto); auto = setInterval(develop, 7000); }
+
+    mark.addEventListener('click', function () { develop(); loop(); });
+    mark.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); develop(); loop(); }
+    });
+    whileVisible(mark, function () {
+      clearTimeout(auto);
+      auto = setTimeout(function () { develop(); loop(); }, k ? 1200 : 2800);
+    }, function () { clearTimeout(auto); clearInterval(auto); });
+    onLanguage.push(caption);
+
+    requestAnimationFrame(function () { requestAnimationFrame(function () { section.classList.add('is-in'); }); });
   })();
 
-  // The floating clock beside the mosaic.
-  (function heroClock() {
-    var label = $('#heroClock'), arc = $('.clock-chip__arc');
-    var left = 299, timer = null;
+  // ---------------------------------------------------------------------------
+  // 01 — The ping: the push, and the duo's clock as a ring that empties with it.
+  // ---------------------------------------------------------------------------
+  (function ping() {
+    var fig = $('#ping'), arc = $('#pingArc');
+    var emoji = $('#pingEmoji'), dareEl = $('#pingDare'), clockEl = $('#pingClock');
+    var pushTitle = $('#pushTitle'), pushText = $('#pushText');
+    var ORDER = [0, 3, 9, 5, 18, 1, 11, 13, 6, 10, 14, 12];
+    var k = 0, c = null, secs = 0, timer = null, started = false;
+
+    function paint() {
+      emoji.textContent = c.e;
+      dareEl.textContent = c.t[L()];
+      var minutes = Math.floor(c.s / 60);
+      pushTitle.textContent = minutes <= 1 ? t('push_go_one') : fill(t('push_go'), minutes);
+      pushText.textContent = c.t[L()];
+    }
     function tick() {
-      left = left <= 0 ? 300 : left - 1;
-      label.textContent = clock(left);
-      arc.style.strokeDashoffset = String(100 - (left / 300) * 100);
+      clockEl.textContent = clock(secs);
+      arc.style.strokeDasharray = (secs / c.s * 100).toFixed(3) + ' 100';
     }
-    whileVisible(label, function () { timer = setInterval(tick, 1000); }, function () { clearInterval(timer); });
+    function deal(first) {
+      c = CHALLENGES[ORDER[k % ORDER.length]]; k++;
+      secs = c.s;
+      function apply() {
+        paint();
+        tick();
+        fig.classList.remove('is-swapping');
+        restart(fig, 'is-pinged');
+      }
+      if (first || still) { apply(); return; }
+      fig.classList.add('is-swapping', 'is-dealing');
+      fig.classList.remove('is-pinged');
+      setTimeout(apply, 380);
+      setTimeout(function () { fig.classList.remove('is-dealing'); }, 1300);
+    }
+    function run() {
+      clearInterval(timer);
+      timer = setInterval(function () {
+        secs -= 1;
+        if (secs <= 0) { deal(false); return; }
+        tick();
+      }, 1000);
+    }
+    deal(true);
+    fig.classList.remove('is-pinged');
+    whileVisible(fig, function () {
+      if (!started) { started = true; setTimeout(function () { fig.classList.add('is-pinged'); }, 350); }
+      run();
+    }, function () { clearInterval(timer); });
+    function next() { deal(false); run(); }
+    fig.addEventListener('click', next);
+    fig.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); next(); } });
+    onLanguage.push(function () { if (c) paint(); });
   })();
 
   // ---------------------------------------------------------------------------
-  // The mosaic (HalvesMosaic): solid tiles, each with one figure cut from a
-  // circle. Now and then a tile turns a quarter. A tap blows it apart and the
-  // next deal swirls back in, while the line under it changes.
+  // 02 — Your half: the shutter, the picture coming up, and the seal.
+  // Theirs stays hatching, breathing, the way everything waiting does.
   // ---------------------------------------------------------------------------
-  (function mosaic() {
-    var el = $('#mosaic');
-    var COLS = 5, ROWS = 5, ANCHOR = 12;
-    var INKS = ['#E4633D', '#E8A33A', '#4A68E8', '#1B6E50', '#9147A8', '#F2B8A6', '#F4ECDD'];
-    var IVORY = '#F4ECDD', CHARCOAL = '#1B1A19';
-    var near = [ANCHOR - 1, ANCHOR + 1, ANCHOR - COLS, ANCHOR + COLS];
-    var deal = 7, busy = false;
-    var lineAt = 0, lineOrder = null;
-    var clip = document.createElement('div');
-    clip.className = 'mosaic__clip';
-    el.appendChild(clip);
-
-    function tiles(seed) {
-      var r = rng(seed), list = [], last = null;
-      for (var i = 0; i < COLS * ROWS; i++) {
-        var bg = r() < 0.18 ? CHARCOAL : INKS[Math.floor(r() * INKS.length)];
-        if (bg === last) bg = INKS[(i * 3 + 1) % INKS.length];
-        if (near.indexOf(i) >= 0 && bg === IVORY) bg = INKS.filter(function (c) { return c !== IVORY && c !== last; })[0];
-        last = bg;
-        var ink = INKS[Math.floor(r() * INKS.length)];
-        if (ink === bg) ink = INKS[(INKS.indexOf(ink) + 2) % INKS.length];
-        var roll = r();
-        list.push({
-          bg: bg, ink: ink,
-          fig: roll < 0.4 ? 'half' : roll < 0.75 ? 'quarter' : roll < 0.9 ? 'circle' : 'none',
-          turns: Math.floor(r() * 4), period: 7 + r() * 11, phase: r() * 18
-        });
-      }
-      return list;
+  (function sealed() {
+    var fig = $('#sealed'), photo = $('#sealedPhoto'), flash = $('.sheet__flash', fig);
+    var SHOTS = [['apple', 0], ['coffee', 0], ['cat', 0], ['lamp', 0], ['plant', 0], ['door', 0]];
+    var k = 0, shot = false, seal = null;
+    function shoot() {
+      var s = SHOTS[k % SHOTS.length]; k++;
+      clearTimeout(seal);
+      fig.classList.remove('is-sealed');
+      photo.innerHTML = scene(s[0], s[1]) + '<i class="glare"></i>';
+      if (still) { photo.style.opacity = 1; fig.classList.add('is-sealed'); return; }
+      if (photo.getAnimations) photo.getAnimations().forEach(function (a) { a.cancel(); });
+      photo.style.opacity = 0;
+      play(flash, [{ opacity: 0 }, { opacity: 0.95, offset: 0.12 }, { opacity: 0 }], { duration: 650, easing: 'ease-out' });
+      play(photo, [{ opacity: 0 }, { opacity: 1 }], { duration: 900, delay: 140, easing: 'ease-out', fill: 'both' });
+      play($('.glare', photo), [{ opacity: 0.9 }, { opacity: 0 }], { duration: 1700, delay: 140, easing: 'ease-out', fill: 'both' });
+      seal = setTimeout(function () { fig.classList.add('is-sealed'); }, 1700);
     }
-    function figure(tile) {
-      var shape = tile.fig === 'half' ? '<path d="M50 0A50 50 0 0 0 50 100Z"/>'
-        : tile.fig === 'quarter' ? '<path d="M0 0H100A100 100 0 0 1 0 100Z"/>'
-        : tile.fig === 'circle' ? '<circle cx="50" cy="50" r="46"/>' : '';
-      return '<svg viewBox="0 0 100 100" style="transform:rotate(' + (tile.turns * 90) + 'deg)" fill="' + tile.ink + '">' + shape + '</svg>';
-    }
-    var cells = [];
-    function paint(list) {
-      if (!cells.length) {
-        for (var i = 0; i < COLS * ROWS; i++) {
-          var c = document.createElement('div');
-          c.className = 'tile-m' + (i === ANCHOR ? ' tile-m--mark' : '');
-          var rad = '0';
-          if (i === 0) rad = '34px 0 0 0';
-          else if (i === COLS - 1) rad = '0 34px 0 0';
-          else if (i === COLS * (ROWS - 1)) rad = '0 0 0 34px';
-          else if (i === COLS * ROWS - 1) rad = '0 0 34px 0';
-          c.style.borderRadius = rad;
-          clip.appendChild(c);
-          cells.push(c);
-        }
-      }
-      list.forEach(function (tile, i) {
-        var c = cells[i];
-        tile.at = tile.turns;
-        if (i === ANCHOR) { c.innerHTML = markSvg(); return; }
-        c.style.background = tile.bg;
-        c.innerHTML = figure(tile);
-      });
-    }
-    var current = tiles(deal);
-    paint(current);
-
-    // Idle: one tile at a time catches a draught and turns a quarter.
-    var idle = null;
-    function startIdle() {
-      stopIdle();
-      var t0 = performance.now() / 1000;
-      idle = setInterval(function () {
-        if (busy || still) return;
-        var now = performance.now() / 1000 - t0;
-        current.forEach(function (tile, i) {
-          if (i === ANCHOR || tile.fig === 'none' || tile.fig === 'circle') return;
-          var due = Math.floor((now + tile.phase) / tile.period);
-          if (tile.seen == null) { tile.seen = due; return; }
-          if (due > tile.seen) {
-            tile.seen = due;
-            tile.at += 1;
-            var svg = cells[i].firstElementChild;
-            if (svg) svg.style.transform = 'rotate(' + (tile.at * 90) + 'deg)';
-          }
-        });
-      }, 250);
-    }
-    function stopIdle() { clearInterval(idle); }
-    whileVisible(el, startIdle, stopIdle);
-
-    // The line under the mosaic.
-    var lineEl = $('#deckLine');
-    function lines() { return t('deck_lines'); }
-    function showLine(animate) {
-      var text = lines()[lineAt];
-      lineEl.innerHTML = painted(text, true);
-      if (animate) staggerWords(lineEl, 0, 70);
-      else $$('.w', lineEl).forEach(function (w) { w.style.animation = 'none'; w.style.opacity = 1; w.style.transform = 'none'; });
-    }
-    function nextLine() {
-      if (!lineOrder || !lineOrder.length) {
-        lineOrder = shuffle(lines().map(function (_, i) { return i; }).filter(function (i) { return i !== lineAt; }));
-      }
-      lineAt = lineOrder.shift();
-      lineEl.classList.add('is-leaving');
-      setTimeout(function () { lineEl.classList.remove('is-leaving'); showLine(true); }, 260);
-    }
-    onLanguage.push(function () { showLine(false); });
-
-    function blast(ox, oy) {
-      if (busy) return;
-      deal += 1;
-      var next = tiles(deal);
-      if (still) { current = next; paint(current); nextLine(); return; }
-      busy = true;
-      var box = el.getBoundingClientRect();
-      var reach = Math.max(window.innerWidth, window.innerHeight) * 1.1;
-      var side = box.width / COLS;
-      var r = rng(deal * 31 + 7);
-      el.classList.add('is-blasting', 'is-charge');
-      var flights = cells.map(function (c, i) {
-        var cx = (i % COLS + 0.5) * side, cy = (Math.floor(i / COLS) + 0.5) * side;
-        var dx = cx - ox, dy = cy - oy, dist = Math.hypot(dx, dy) || 1;
-        var angle = Math.atan2(dy, dx) + (r() * 2 - 1) * 0.32;
-        return {
-          dist: dist, angle: angle, pace: 0.85 + r() * 0.3,
-          spinOut: (r() < 0.5 ? 1 : -1) * (140 + r() * 300), grow: 1.1 + r() * 0.45,
-          swirl: 0.7 + r() * 0.5, spinIn: 90 + r() * 180,
-          home: Math.hypot(cx - box.width / 2, cy - box.height / 2)
-        };
-      });
-      var maxDist = Math.max.apply(null, flights.map(function (f) { return f.dist; }));
-      var maxHome = Math.max.apply(null, flights.map(function (f) { return f.home; })) || 1;
-
-      setTimeout(function () {
-        el.classList.remove('is-charge');
-        el.classList.add('is-apart');
-        cells.forEach(function (c, i) {
-          if (i === ANCHOR) return;
-          var f = flights[i];
-          var x = Math.cos(f.angle) * reach, y = Math.sin(f.angle) * reach;
-          c.style.zIndex = 5;
-          c.animate([
-            { transform: 'none' },
-            { transform: 'translate(' + x + 'px,' + y + 'px) rotate(' + f.spinOut + 'deg) scale(' + f.grow + ')' }
-          ], { duration: 700 * f.pace, delay: (f.dist / maxDist) * 180, easing: 'cubic-bezier(.45,0,.8,.4)', fill: 'forwards' });
-        });
-      }, 160);
-
-      setTimeout(nextLine, 760);
-
-      setTimeout(function () {
-        current = next;
-        cells.forEach(function (c, i) {
-          if (i === ANCHOR) return;
-          var tile = current[i];
-          tile.at = tile.turns;
-          c.style.background = tile.bg;
-          c.innerHTML = figure(tile);
-          c.getAnimations().forEach(function (a) { a.cancel(); });
-          var f = flights[i];
-          var from = f.angle + f.swirl;
-          var x = Math.cos(from) * reach, y = Math.sin(from) * reach;
-          c.animate([
-            { transform: 'translate(' + x + 'px,' + y + 'px) rotate(' + (-f.spinIn) + 'deg) scale(1.3)' },
-            { transform: 'none' }
-          ], { duration: 760, delay: (f.home / maxHome) * 240, easing: 'cubic-bezier(.16,.84,.3,1.04)', fill: 'backwards' });
-        });
-      }, 1250);
-
-      setTimeout(function () {
-        el.classList.remove('is-apart');
-        el.animate([{ transform: 'scale(1)' }, { transform: 'scale(.985)' }, { transform: 'scale(1)' }], { duration: 300, easing: 'ease-out' });
-      }, 1900);
-
-      setTimeout(function () {
-        cells.forEach(function (c) { c.style.zIndex = ''; c.getAnimations().forEach(function (a) { a.cancel(); }); });
-        el.classList.remove('is-blasting');
-        busy = false;
-      }, 2300);
-    }
-
-    el.addEventListener('click', function (e) {
-      var box = el.getBoundingClientRect();
-      var x = e.clientX ? e.clientX - box.left : box.width / 2;
-      var y = e.clientY ? e.clientY - box.top : box.height / 2;
-      blast(x, y);
+    whileVisible(fig, function () {
+      if (!shot) { shot = true; setTimeout(shoot, 500); }
     });
-    el.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); var b = el.getBoundingClientRect(); blast(b.width / 2, b.height / 2); }
-    });
-    showLine(true);
+    fig.addEventListener('click', shoot);
+    fig.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); shoot(); } });
   })();
 
   // ---------------------------------------------------------------------------
-  // The ticker of challenges
+  // 03 — The moment: the second half lands, the two meet at the seam, and
+  // the name that never showed finally does.
   // ---------------------------------------------------------------------------
-  (function ticker() {
-    var rows = $$('[data-ticker]');
-    var dots = ['#E4633D', '#E8A33A', '#4A68E8', '#22A273', '#9147A8', '#F2B8A6', '#14787B', '#B23A6F'];
-    function render() {
-      var list = CHALLENGES.map(function (c) { return c.t[L()]; });
-      rows.forEach(function (row, r) {
-        var half = list.slice(r ? 10 : 0, r ? 20 : 10);
-        if (r) half = half.concat(list.slice(0, 3));
-        var items = half.map(function (text, i) {
-          var c = dots[(i + r * 3) % dots.length];
-          return '<span class="ticker__item"><i class="' + (i % 2 ? 'h' : '') + '" style="background:' + c + '"></i>' + esc(text) + '</span>';
-        }).join('');
-        row.innerHTML = items + items;
-      });
-    }
-    onLanguage.push(render);
-  })();
-
-  // ---------------------------------------------------------------------------
-  // How it works: the tour's picture, one duo in three beats (IntroTourView).
-  // ---------------------------------------------------------------------------
-  (function tour() {
-    var screen = $('#tour'), stage = $('#stage');
-    var titleEl = $('#tourTitle'), msgEl = $('#tourMsg'), btn = $('#tourNext');
-    var steps = $$('#howSteps .step'), tabs = $$('.how__tabs button');
-    var step = -1, timers = [], raf = 0, ticker = 0, turnTimer = 0, autoTimer = 0;
-    var duoStart = 0, visible = false, touched = 0;
-    var FRIENDS = ['#E8A33A', '#22A273', '#14787B', '#5A48C8', '#9147A8', '#B23A6F'];
+  (function joined() {
+    var fig = $('#joined'), left = $('#joinedL'), right = $('#joinedR');
+    var who = $('#joinedWho'), dareEl = $('#joinedDare'), host = $('.burst', fig);
+    var PAIRS = [DUOS[0], DUOS[3], DUOS[2], DUOS[6], DUOS[5]];
+    var k = 0, d = null, busy = false, ran = false, revealed = false, timers = [];
 
     function later(fn, ms) { timers.push(setTimeout(fn, ms)); }
-    function clearAll() {
-      timers.forEach(clearTimeout); timers = [];
-      cancelAnimationFrame(raf); clearInterval(ticker); clearTimeout(turnTimer); clearTimeout(autoTimer);
+    function caption() {
+      if (!d) return;
+      dareEl.innerHTML = esc(t('unlocked')) + ' · ' + esc(CHALLENGES[d.c].t[L()]);
+      if (revealed) { who.textContent = NAMES[d.who][L()]; who.classList.remove('is-hidden'); }
     }
-    function secsLeft() { return 300 - (performance.now() - duoStart) / 1000; }
-
-    function words(step) {
-      titleEl.innerHTML = '';
-      msgEl.style.opacity = 0;
-      var title = step === 0 ? t('tour_dealt')[0] : step === 1 ? t('tour_shoot') : t('tour_unlock');
-      titleEl.innerHTML = '<span>' + painted(title, true) + '</span>';
-      staggerWords(titleEl, 140, 70);
-      msgEl.textContent = t(step === 0 ? 'tour_dealt_msg' : step === 1 ? 'tour_shoot_msg' : 'tour_unlock_msg');
-      setTimeout(function () { msgEl.style.transition = 'opacity .5s'; msgEl.style.opacity = 1; }, 300);
-      btn.textContent = t(step === 2 ? 'tour_start' : 'tour_next');
-      if (step === 0 && !still) {
-        var at = 0;
-        var phrases = t('tour_dealt');
-        var loop = function () {
-          at = (at + 1) % phrases.length;
-          titleEl.innerHTML = '<span>' + painted(phrases[at], true) + '</span>';
-          staggerWords(titleEl, 0, 60);
-          turnTimer = setTimeout(loop, 2200);
-        };
-        turnTimer = setTimeout(loop, 2600);
-      }
-    }
-
-    function pushEl() {
-      var p = document.createElement('div');
-      p.className = 'st st-push';
-      p.innerHTML = markSvg() + '<p><b>' + esc(t('push_title')) + '<span>' + esc(t('push_time')) + '</span></b>' + esc(t('tour_push_sub')) + '</p>';
-      return p;
-    }
-
-    // Page 1 · Dealt: the draw.
-    function dealt() {
-      var html = '<div class="st st-orbit"></div>' +
-        '<div class="st st-ring"><svg viewBox="0 0 100 100"><circle class="track" cx="50" cy="50" r="48" fill="none" stroke-width="2.6"/>' +
-        '<circle class="arc" cx="50" cy="50" r="48" fill="none" stroke-width="2.6" stroke-linecap="round" pathLength="100" style="stroke-dashoffset:100"/></svg></div>' +
-        '<div class="st st-mark"><svg viewBox="0 0 100 100"><defs><pattern id="stripes" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="rgba(244,236,221,.03)"/><rect width="2" height="6" fill="rgba(244,236,221,.12)"/></pattern></defs>' +
-        '<path d="' + MARK_L + '" fill="#E4633D"/><path class="st-slot" d="' + MARK_R + '"/></svg></div>' +
-        '<div class="st st-ripple"></div>';
-      FRIENDS.forEach(function (c, i) {
-        html += '<div class="st st-friend" data-i="' + i + '" style="color:' + c + '"><svg viewBox="0 0 100 100"><path d="M50 0A50 50 0 0 0 50 100Z" fill="currentColor"/></svg></div>';
-      });
-      html += '<div class="st st-land" style="left:51.18%;top:40.96%;width:10.63%;aspect-ratio:1/2;opacity:0"><div class="st-pick__card">' +
-        '<svg viewBox="0 0 50 100" preserveAspectRatio="none"><path d="M0 0A50 50 0 0 1 0 100Z" fill="#E8A33A"/></svg>' +
-        '<svg class="back" viewBox="0 0 50 100" preserveAspectRatio="none"><path d="M0 0A50 50 0 0 1 0 100Z" fill="#4A68E8"/><text x="18" y="62" font-family="Source Serif 4, Georgia, serif" font-size="34" fill="#F4ECDD" text-anchor="middle">?</text></svg>' +
-        '</div></div>' +
-        '<div class="st st-chip">5:00</div>' +
-        '<div class="st st-dare"><small>' + esc(t('tour_dare_label')) + '</small><b>' + esc(t('tour_dare')) + '</b></div>';
-      stage.innerHTML = html;
-      var push = pushEl();
-      screen.appendChild(push);
-
-      var friends = $$('.st-friend', stage);
-      var land = $('.st-land', stage), ring = $('.st-ring .arc', stage), chip = $('.st-chip', stage);
-      var dare = $('.st-dare', stage), ripple = $('.st-ripple', stage), orbit = $('.st-orbit', stage);
-      var RX = 38.75, RY = 29.09, BASE = -81, SPEED = 20;
-      // The light runs 10 steps, each slower, from friend 3 round to Saffron (0).
-      var run = [], acc = 400;
-      for (var k = 0; k < 10; k++) { run.push({ at: acc, i: (3 + k) % 6 }); acc += 55 + 170 * Math.pow(k / 9, 2); }
-      var lit = -1, picked = false, t0 = performance.now();
-
-      function place(now) {
-        var t = (now - t0) / 1000;
-        friends.forEach(function (f, i) {
-          if (f.dataset.gone) return;
-          var a = (BASE + i * 60 + SPEED * Math.min(t, 1.6)) * Math.PI / 180;
-          var depth = (Math.sin(a) + 1) / 2;
-          var scale = (0.82 + depth * 0.32) * (i === lit ? 1.3 : 1);
-          f.style.left = (50 + RX * Math.cos(a)) + '%';
-          f.style.top = (50 + RY * Math.sin(a)) + '%';
-          f.style.transform = 'rotate(' + (a * 180 / Math.PI + 180) + 'deg) scale(' + scale.toFixed(3) + ')';
-          f.style.opacity = lit < 0 ? (0.55 + depth * 0.45) : (i === lit ? 1 : 0.5);
-          f.style.zIndex = Math.round(depth * 10);
-          f.classList.toggle('is-lit', i === lit);
-        });
-      }
-
-      function finish() {
-        // Settled: the pick sits in the slot, face down, the clock running.
-        friends.forEach(function (f) { f.style.opacity = 0; f.dataset.gone = 1; });
-        orbit.style.opacity = 0;
-        land.style.opacity = 1;
-        $('.st-slot', stage).style.opacity = 0;
-        land.classList.add('is-flipped');
-        push.classList.add('is-on');
-        $('.st-ring', stage).classList.add('is-on');
-        ring.style.strokeDashoffset = '0';
-        chip.classList.add('is-on');
-        dare.classList.add('is-on');
-        duoStart = performance.now();
-        ticker = setInterval(function () {
-          var s = secsLeft();
-          chip.textContent = clock(s);
-          ring.style.strokeDashoffset = String(100 - Math.max(0, s / 300) * 100);
-        }, 1000);
-      }
-
-      if (still) {
-        place(t0);
-        later(finish, 900);
-        later(done, 2400);
-        return;
-      }
-
-      // Pop in, then the light runs round.
-      friends.forEach(function (f, i) {
-        f.animate([{ opacity: 0, scale: '0.2' }, { scale: '1' }], { duration: 420, delay: 60 * i, easing: 'cubic-bezier(.34,1.56,.64,1)', fill: 'backwards' });
-      });
-      run.forEach(function (s) { later(function () { lit = s.i; }, s.at); });
-
-      function frame(now) {
-        if (!picked) place(now);
-        raf = requestAnimationFrame(frame);
-      }
-      raf = requestAnimationFrame(frame);
-
-      // 1605: it pops and twirls into the empty half, landing at 2185.
-      later(function () {
-        picked = true;
-        cancelAnimationFrame(raf);
-        var pick = friends[0];
-        var from = { left: pick.style.left, top: pick.style.top, transform: pick.style.transform };
-        friends.forEach(function (f, i) {
-          if (i === 0) return;
-          var a = (BASE + i * 60 + SPEED * 1.6) * Math.PI / 180;
-          f.animate([{ opacity: f.style.opacity }, { opacity: 0, left: (50 + RX * 1.5 * Math.cos(a)) + '%', top: (50 + RY * 1.5 * Math.sin(a)) + '%' }],
-            { duration: 520, easing: 'cubic-bezier(.4,0,.2,1)', fill: 'forwards' });
-        });
-        orbit.style.opacity = 0;
-        pick.classList.remove('is-lit');
-        var anim = pick.animate([
-          { left: from.left, top: from.top, transform: from.transform, offset: 0 },
-          { left: from.left, top: from.top, transform: from.transform.replace(/scale\([^)]*\)/, 'scale(1.6)'), offset: 0.12 },
-          { left: '64%', top: '18%', transform: 'rotate(40deg) scale(1.55)', offset: 0.55 },
-          { left: '51.18%', top: '51.27%', transform: 'rotate(180deg) scale(1.7)', offset: 1 }
-        ], { duration: 580, easing: 'cubic-bezier(.45,.05,.3,1)', fill: 'forwards' });
-        anim.onfinish = function () {
-          pick.style.opacity = 0;
-          land.style.opacity = 1;
-          $('.st-slot', stage).style.opacity = 0;
-          land.animate([{ transform: 'scale(1.14)' }, { transform: 'scale(1)' }], { duration: 380, easing: 'cubic-bezier(.34,1.56,.64,1)' });
-          ripple.classList.add('go');
-          later(function () { land.classList.add('is-flipped'); }, 260);
-          later(function () { push.classList.add('is-on'); }, 360);
-          later(function () {
-            $('.st-ring', stage).classList.add('is-on');
-            ring.style.strokeDashoffset = '0';
-            chip.classList.add('is-on');
-            duoStart = performance.now();
-            ticker = setInterval(function () {
-              var s = secsLeft();
-              chip.textContent = clock(s);
-              ring.style.strokeDashoffset = String(100 - Math.max(0, s / 300) * 100);
-            }, 1000);
-          }, 410);
-          later(function () { dare.classList.add('is-on'); }, 780);
-          later(done, 3600);
-        };
-      }, 1605);
-    }
-
-    // Page 2 · Shoot: your half lands with a flash; theirs waits.
-    function shoot() {
-      if (!duoStart) duoStart = performance.now() - 24000;
-      stage.innerHTML =
-        '<div class="st st-head"><b>' + esc(t('tour_dare')) + '</b><span class="st-time">' + clock(secsLeft()) + '</span></div>' +
-        '<div class="st st-pair">' +
-          '<div class="st-half st-half--l"><div class="st-empty st-empty--you"></div><div class="st-photo" style="position:absolute;inset:0;opacity:0">' + scene('apple', 0) + '</div><div class="st-flash"></div><span class="st-tag">✓ ' + esc(t('tour_you')) + '</span></div>' +
-          '<div class="st-half st-half--r"><div class="st-empty"><div class="st-wait"><span class="st-q">?</span><span class="st-dots"><i></i><i></i><i></i></span></div></div></div>' +
-        '</div>';
-      var pair = $('.st-pair', stage), time = $('.st-time', stage);
-      ticker = setInterval(function () { time.textContent = clock(secsLeft()); }, 1000);
-      if (!still) pair.animate([{ opacity: 0, transform: 'scale(.86)' }, { opacity: 1, transform: 'none' }], { duration: 520, easing: 'cubic-bezier(.2,.8,.2,1)' });
-      later(function () {
-        $('.st-flash', stage).classList.add('go');
-        $('.st-photo', stage).style.opacity = 1;
-        $('.st-tag', stage).classList.add('is-on');
-      }, still ? 300 : 480);
-      later(done, 3600);
-    }
-
-    // Page 3 · Unlock: steamed glass clears, the halves sign the join.
-    function unlock() {
-      stage.innerHTML =
-        '<div class="st st-head st-head--dare"><b>' + esc(t('tour_dare')) + '</b></div>' +
-        '<div class="st st-head st-head--unlocked"><small>' + esc(t('tour_unlocked')) + '</small><b>' + esc(t('tour_names')) + '</b></div>' +
-        '<div class="st st-pair">' +
-          '<div class="st-half st-half--l">' + scene('apple', 0) + '<span class="st-tag">' + esc(t('tour_you')) + '</span></div>' +
-          '<div class="st-half st-half--r">' + scene('balloon', 0) + '<span class="st-tag st-tag--them">' + esc(t('tour_partner')) + '</span></div>' +
-          '<div class="st-glass"></div>' +
-          '<div class="st-seam"><i>' + markSvg() + '</i></div>' +
-        '</div>' +
-        '<div class="st st-react">🔥</div>' +
-        '<div class="st-burst"></div>';
-      var pair = $('.st-pair', stage);
-      later(function () { pair.classList.add('is-closed'); }, still ? 0 : 120);
-      later(function () { $('.st-glass', stage).classList.add('is-clear'); }, still ? 200 : 950);
-      later(function () {
-        pair.classList.add('is-signed');
-        $('.st-head--dare', stage).style.opacity = 0;
-        $('.st-head--unlocked', stage).classList.add('is-on');
-        $$('.st-tag', stage).forEach(function (tg) { tg.classList.add('is-on'); });
-        if (!still) burst($('.st-burst', stage));
-      }, still ? 300 : 1300);
-      later(function () { $('.st-react', stage).classList.add('is-on'); }, still ? 400 : 1700);
-      later(done, 4200);
-    }
-
-    // Halves thrown out from the centre (HalvesBurst).
-    function burst(host) {
-      var colors = ['#E4633D', '#E8A33A', '#4A68E8', '#22A273', '#9147A8', '#F2B8A6', '#F4ECDD'];
-      var r = rng(26);
-      for (var i = 0; i < 46; i++) {
-        var a = r() * Math.PI * 2, reach = 0.3 + r() * 0.7, size = 2.8 + r() * 4.4;
-        var quarter = r() < 0.35, color = colors[Math.floor(r() * colors.length)];
-        var spin = (r() - 0.5) * 540, fall = 0.05 + r() * 0.15;
-        var piece = document.createElement('i');
-        piece.style.width = piece.style.height = size + 'cqw';
-        piece.style.marginLeft = piece.style.marginTop = (-size / 2) + 'cqw';
-        piece.style.background = color;
-        piece.style.borderRadius = quarter ? '0 0 100% 0' : '100% 0 0 100% / 50% 0 0 50%';
-        if (!quarter) piece.style.width = (size / 2) + 'cqw';
-        host.appendChild(piece);
-        var x = Math.cos(a) * reach * 66, y = Math.sin(a) * reach * 66;
-        piece.animate([
-          { transform: 'translate(0,0) rotate(0deg)', opacity: 1 },
-          { transform: 'translate(' + (x * 0.8) + 'cqw,' + (y * 0.8 + fall * 20) + 'cqw) rotate(' + (spin * 0.6) + 'deg)', opacity: 1, offset: 0.55 },
-          { transform: 'translate(' + x + 'cqw,' + (y + fall * 90) + 'cqw) rotate(' + spin + 'deg)', opacity: 0 }
-        ], { duration: 1700, easing: 'cubic-bezier(.15,.7,.3,1)', fill: 'forwards' });
-      }
-    }
-
-    function done() {
-      // On a narrow screen the steps take turns on their own, unless someone is steering.
-      if (!narrow.matches || !visible) return;
-      if (performance.now() - touched < 9000) return;
-      autoTimer = setTimeout(function () { setStep((step + 1) % 3); }, 1400);
-    }
-
-    function setStep(next, force) {
-      if (next === step && !force) return;
-      step = next;
-      clearAll();
-      $$('.st-push', screen).forEach(function (p) { p.remove(); });
-      screen.dataset.step = String(step);
-      steps.forEach(function (s, i) { s.classList.toggle('is-active', i === step); });
-      tabs.forEach(function (b, i) { b.setAttribute('aria-selected', String(i === step)); b.tabIndex = i === step ? 0 : -1; });
-      words(step);
-      if (!visible) { stage.innerHTML = ''; return; }
-      if (step === 0) { duoStart = 0; dealt(); } else if (step === 1) shoot(); else unlock();
-    }
-
-    tabs.forEach(function (b) {
-      b.addEventListener('click', function () { touched = performance.now(); setStep(+b.dataset.go, true); });
-    });
-    btn.addEventListener('click', function () {
-      touched = performance.now();
-      if (step === 2) { $('#download').scrollIntoView({ behavior: still ? 'auto' : 'smooth' }); return; }
-      if (narrow.matches) setStep(step + 1);
-      else steps[step + 1].scrollIntoView({ behavior: still ? 'auto' : 'smooth', block: 'center' });
-    });
-
-    // On a wide screen the page's scroll turns the pages.
-    if ('IntersectionObserver' in window) {
-      var io = new IntersectionObserver(function (entries) {
-        if (narrow.matches) return;
-        entries.forEach(function (en) { if (en.isIntersecting) setStep(+en.target.dataset.step); });
-      }, { rootMargin: '-45% 0px -45% 0px' });
-      steps.forEach(function (s) { io.observe(s); });
-    }
-    whileVisible(screen, function () { visible = true; setStep(step < 0 ? 0 : step, true); }, function () { visible = false; clearAll(); }, '0px 0px -10% 0px');
-    onLanguage.push(function () { if (step >= 0) setStep(step, true); });
-    words(0);
-    screen.dataset.step = '0';
-  })();
-
-  // ---------------------------------------------------------------------------
-  // The rule: the name that never shows.
-  // ---------------------------------------------------------------------------
-  (function who() {
-    var el = $('#whoName');
-    var letters = 'ABDEGIKLMNORSTაბგდევზთიკლმნოპრსტუფქღყშჩცძწჭხჯჰ';
-    var timer = null;
-    function scramble() {
-      if (still) return;
+    function scramble(name, done) {
+      var letters = lang === 'ka' ? 'აბგდევზთიკლმნოპრსტუფქღყშჩცძწჭხჯჰ' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
       var n = 0;
+      who.classList.remove('is-hidden');
       var iv = setInterval(function () {
         n += 1;
-        var s = [];
-        for (var i = 0; i < 5; i++) s.push(n > 8 + i * 2 ? '?' : letters.charAt(Math.floor(Math.random() * letters.length)));
-        el.textContent = s.join(' ');
-        if (n > 18) { clearInterval(iv); el.textContent = '? ? ? ? ?'; }
-      }, 55);
+        var out = '';
+        for (var i = 0; i < name.length; i++) out += i < n / 3 ? name.charAt(i) : letters.charAt(Math.floor(Math.random() * letters.length));
+        who.textContent = out;
+        if (n / 3 >= name.length) { clearInterval(iv); who.textContent = name; if (done) done(); }
+      }, 34);
     }
-    whileVisible(el, function () { timer = setInterval(scramble, 3800); setTimeout(scramble, 700); }, function () { clearInterval(timer); });
+    function run() {
+      if (busy) return;
+      busy = true;
+      timers.forEach(clearTimeout); timers = [];
+      d = PAIRS[k % PAIRS.length]; k++;
+      revealed = false;
+      left.innerHTML = scene(d.a[0], d.a[1], d.fx) + fxLayers(d.fx);
+      right.innerHTML = scene(d.b[0], d.b[1], d.fx) + fxLayers(d.fx) + '<i class="glare"></i>';
+      who.textContent = '? ? ? ? ?';
+      who.classList.add('is-hidden');
+      caption();
+      if (still) { revealed = true; caption(); busy = false; return; }
+      fig.classList.remove('is-landed');
+      fig.classList.add('is-apart');
+      later(function () {
+        fig.classList.add('is-landed');
+        play($('.glare', right), [{ opacity: 0.92 }, { opacity: 0 }], { duration: 1500, easing: 'ease-out', fill: 'both' });
+      }, 700);
+      later(function () { fig.classList.remove('is-apart', 'is-landed'); }, 1900);
+      later(function () { burst(host, Math.min(fig.offsetWidth * 0.62, 460), 46, Math.max(0.8, fig.offsetWidth / 640)); }, 2250);
+      later(function () {
+        scramble(NAMES[d.who][L()], function () { revealed = true; busy = false; });
+      }, 2350);
+    }
+    // Before it's seen, the duo waits apart, the right half still hatching.
+    d = PAIRS[0];
+    left.innerHTML = scene(d.a[0], d.a[1]);
+    right.innerHTML = scene(d.b[0], d.b[1]) + '<i class="glare"></i>';
+    caption();
+    if (!still) fig.classList.add('is-apart');
+    whileVisible(fig, function () { if (!ran) { ran = true; k = 0; setTimeout(run, 250); } }, null, '0px 0px -15% 0px');
+    fig.addEventListener('click', run);
+    fig.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); run(); } });
+    onLanguage.push(caption);
   })();
 
   // ---------------------------------------------------------------------------
-  // The dealer: real challenge cards, painted by the deck's colour rule.
+  // The deck: real challenges, each card painted by the deck's colour rule,
+  // with one figure cut from a circle pressed into it.
   // ---------------------------------------------------------------------------
-  (function dealer() {
-    var host = $('#dealer');
-    var order = shuffle(CHALLENGES.slice());
-    var at = 0, cards = [], last = null, ticker = null;
+  (function deck() {
+    var stack = $('#dealerStack'), levelsEl = $('#levels'), lineEl = $('#levelLine');
+    var level = null, queue = [], last = null, seed = 0, flying = false;
+    var RING = '<svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8" fill="none" stroke="currentColor" stroke-opacity=".25" stroke-width="2.4"/>' +
+      '<circle cx="10" cy="10" r="8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" pathLength="100" stroke-dasharray="100 100"/></svg>';
 
-    function ornament(seed) { return '<span class="ornament ornament--' + (seed % 3) + '"></span>'; }
-    function front(c, hue, seed) {
+    function refill() {
+      queue = shuffle(CHALLENGES.map(function (c, i) { return i; }).filter(function (i) { return !level || CHALLENGES[i].l === level; }));
+    }
+    function draw() {
+      if (!queue.length) refill();
+      return queue.shift();
+    }
+    function cardHtml(c) {
       var lv = LEVEL[c.l];
-      var filter = c.fx ? FILTERS.filter(function (f) { return f.key === c.fx; })[0] : null;
-      return '<div class="dcard__face">' + ornament(seed) +
-        '<div class="dcard__top"><div class="pair-faces"><span>' + esc(t('card_you')) + '</span><span>?</span></div>' +
-        '<div class="dcard__who"><small>' + esc(t('card_duo_with')) + '</small><span>' + esc(t('card_someone')) + '</span></div>' +
-        '<div class="ring"><svg viewBox="0 0 36 36"><circle class="track" cx="18" cy="18" r="16.5" fill="none" stroke-width="2.4"/><circle class="arc" cx="18" cy="18" r="16.5" fill="none" stroke-width="2.4" pathLength="100" style="stroke-dashoffset:0"/></svg><span class="ring__t">' + clock(c.s) + '</span></div></div>' +
-        '<p class="dcard__text">' + esc(c.t[L()]) + '</p>' +
-        '<div class="dcard__meta"><span>' + c.e + '&nbsp; ' + esc(CATEGORY[c.c][L()]) + ' · ' + lv[0] + ' ' + esc(t(lv[1])) + '</span>' +
-        '<span class="chip-ink"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M6 16l4-4 3 3 2-2 3 3" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>' + esc(t('card_example')) + '</span></div>' +
-        (filter ? '<div class="dcard__filter"><span class="chip-ink">' + esc(filter.key) + '</span><span>' + esc(filter.line[L()]) + '</span></div>' : '') +
-        '<div class="dcard__btn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8.5A2.5 2.5 0 0 1 6.5 6h1.8l1.4-2h4.6l1.4 2h1.8A2.5 2.5 0 0 1 20 8.5v8a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 16.5z" fill="currentColor"/><circle cx="12" cy="12.5" r="3.4" style="fill:var(--hue-ink)"/></svg>' + esc(t('card_shoot')) + '</div>' +
-        '</div>';
+      return '<i class="dcard__orn dcard__orn--' + (seed % 3) + '"></i>' +
+        '<div class="dcard__top"><span class="dcard__level"><span aria-hidden="true">' + lv[0] + '</span>' + esc(t(lv[1])) + '</span>' +
+        '<span class="dcard__cat">' + esc(CATEGORY[c.c][L()]) + '</span></div>' +
+        '<p class="dcard__emoji" aria-hidden="true">' + c.e + '</p>' +
+        '<p class="dcard__dare">' + esc(c.t[L()]) + '</p>' +
+        '<p class="dcard__framing">' + esc(c.f[L()]) + '</p>' +
+        '<div class="dcard__foot"><span class="dcard__clock">' + RING + clock(c.s) + '</span>' +
+        '<span class="dcard__tip">' + esc(c.p[L()]) + '</span>' + (c.fx ? '<span class="dcard__fx">' + esc(c.fx) + '</span>' : '') + '</div>';
     }
-    function back(c, seed) {
-      return '<div class="dcard__face dcard__face--back">' + ornament(seed + 1) +
-        '<span class="dcard__emoji" aria-hidden="true">' + c.e + '</span>' +
-        '<p class="dcard__back-title">' + esc(t('card_how')) + '</p>' +
-        '<dl class="dcard__dl"><div><dt>' + esc(t('card_framing')) + '</dt><dd>' + esc(c.f[L()]) + '</dd></div>' +
-        '<div><dt>' + esc(t('card_tip')) + '</dt><dd>' + esc(c.p[L()]) + '</dd></div></dl>' +
-        '<div class="dcard__btn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 14l-4-4 4-4M5 10h9a5 5 0 0 1 0 10h-2" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>' + esc(t('card_back')) + '</div>' +
-        '</div>';
-    }
-    function make() {
-      var c = order[at % order.length];
-      at += 1;
-      var hue = nextHue(cards.map(function (k) { return k.hue; }), last);
+    function make(pos) {
+      var i = draw(), c = CHALLENGES[i];
+      var onDeck = $$('.dcard', stack).map(function (el) { return HUES[+el.getAttribute('data-hue')]; });
+      var hue = nextHue(onDeck, last);
       last = hue;
+      seed += 1;
       var el = document.createElement('div');
       el.className = 'dcard';
-      el.tabIndex = -1;
-      el.setAttribute('role', 'button');
+      el.setAttribute('data-i', i);
+      el.setAttribute('data-hue', hue.index);
+      el.setAttribute('data-pos', pos);
       el.style.setProperty('--hue', hue.base);
-      el.style.setProperty('--hue-ink', hue.ink);
-      el.style.color = hue.ink;
-      var card = { el: el, c: c, hue: hue, seed: at, left: c.s };
-      paint(card);
-      el.addEventListener('click', function () { flip(card); });
-      el.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); flip(card); } });
-      return card;
+      el.style.setProperty('--ink', hue.ink);
+      el.innerHTML = cardHtml(c);
+      stack.insertBefore(el, stack.firstChild);
+      return el;
     }
-    function paint(card) {
-      card.el.innerHTML = '<div class="dcard__inner">' + front(card.c, card.hue, card.seed) + back(card.c, card.seed) + '</div>';
-      card.el.setAttribute('aria-label', fill(t('card_a11y'), card.c.t[L()]));
-      tickCard(card);
-    }
-    function flip(card) {
-      if (cards[0] !== card) return;
-      card.el.classList.toggle('is-flipped');
-    }
-    function layout() {
-      cards.forEach(function (card, i) {
-        card.el.dataset.pos = String(i);
-        card.el.tabIndex = i === 0 ? 0 : -1;
-        card.el.setAttribute('aria-hidden', String(i !== 0));
-      });
-      fit();
-    }
-    // Every card as tall as the tallest on the deck, so the ones behind always show.
-    function fit() {
-      var tallest = 0;
-      cards.forEach(function (card) { card.el.style.height = 'auto'; tallest = Math.max(tallest, card.el.offsetHeight); });
-      cards.forEach(function (card) { card.el.style.height = tallest + 'px'; });
-      host.style.height = (tallest + 48) + 'px';
-    }
-    var fitTimer = null;
-    window.addEventListener('resize', function () { clearTimeout(fitTimer); fitTimer = setTimeout(fit, 120); });
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
-    function tickCard(card) {
-      var label = $('.ring__t', card.el), arc = $('.ring .arc', card.el);
-      if (!label) return;
-      label.textContent = clock(card.left);
-      arc.style.strokeDashoffset = String(100 - (card.left / card.c.s) * 100);
-    }
-    function dealNext() {
-      var gone = cards.shift();
-      if (gone) {
-        gone.el.dataset.pos = 'gone';
-        setTimeout(function () { gone.el.remove(); }, 700);
-      }
-      var fresh = make();
-      fresh.el.dataset.pos = 'new';
-      host.appendChild(fresh.el);
-      cards.push(fresh);
-      requestAnimationFrame(function () { requestAnimationFrame(layout); });
-    }
-    for (var i = 0; i < 3; i++) { var card = make(); cards.push(card); host.appendChild(card.el); }
-    layout();
-    $('#dealNext').addEventListener('click', dealNext);
-
-    // The top card's clock runs; at zero the duo is gone and the next is dealt.
-    whileVisible(host, function () {
-      ticker = setInterval(function () {
-        var top = cards[0];
-        if (!top) return;
-        top.left -= 1;
-        if (top.left <= 0) { dealNext(); return; }
-        tickCard(top);
-      }, 1000);
-    }, function () { clearInterval(ticker); });
-
-    // Swipe the top card away.
-    var sx = null;
-    host.addEventListener('pointerdown', function (e) { sx = e.clientX; });
-    host.addEventListener('pointerup', function (e) {
-      if (sx != null && Math.abs(e.clientX - sx) > 60) { e.preventDefault(); dealNext(); }
-      sx = null;
-    });
-
-    onLanguage.push(function () { cards.forEach(function (c) { var flipped = c.el.classList.contains('is-flipped'); paint(c); c.el.classList.toggle('is-flipped', flipped); }); fit(); });
-  })();
-
-  // ---------------------------------------------------------------------------
-  // Numbers that count up once
-  // ---------------------------------------------------------------------------
-  (function counts() {
-    if (still || !('IntersectionObserver' in window)) return;
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (!en.isIntersecting) return;
-        io.unobserve(en.target);
-        var el = en.target, to = +el.dataset.count, t0 = performance.now();
-        (function step(now) {
-          var p = Math.min((now - t0) / 1200, 1);
-          el.textContent = String(Math.round(to * (1 - Math.pow(1 - p, 3))));
-          if (p < 1) requestAnimationFrame(step);
-        })(t0);
-      });
-    }, { threshold: 0.6 });
-    $$('[data-count]').forEach(function (el) { el.textContent = '0'; io.observe(el); });
-  })();
-
-  // ---------------------------------------------------------------------------
-  // The filter lab: the app's own colour matrices, vignettes and scanlines.
-  // ---------------------------------------------------------------------------
-  (function lab() {
-    var defs = $('#filterDefs');
-    defs.innerHTML = FILTERS.map(function (f) {
-      var m = f.m.slice();
-      var values = [];
-      for (var r = 0; r < 3; r++) {
-        values.push(m[r * 5], m[r * 5 + 1], m[r * 5 + 2], m[r * 5 + 3], +(m[r * 5 + 4] / 255).toFixed(5));
-      }
-      values.push(0, 0, 0, 1, 0);
-      return '<filter id="' + filterId(f.key) + '" color-interpolation-filters="sRGB" x="0" y="0" width="100%" height="100%"><feColorMatrix type="matrix" values="' + values.join(' ') + '"/></filter>';
-    }).join('');
-
-    var pair = $('#labPair'), chipsEl = $('#labChips');
-    var nameEl = $('#labName'), lineEl = $('#labTagline'), fromEl = $('#labFrom');
-    $$('.duo__half', pair).forEach(function (half) {
-      half.innerHTML = scene(half.dataset.scene, +half.dataset.v) +
-        '<i class="fx-vig" style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(farthest-corner at 50% 50%,transparent 55%,#000 100%);opacity:0;transition:opacity .5s"></i>' +
-        '<i class="fx-lines" style="position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.12) 0 1px,transparent 1px 3px);opacity:0;transition:opacity .5s"></i>';
-    });
-    var current = 0, auto = null, steered = false;
-    function chips() {
-      chipsEl.innerHTML = '<button type="button" class="fchip fchip--none" role="radio" data-i="-1">' + esc(t('fl_none')) + '</button>' +
-        FILTERS.map(function (f, i) { return '<button type="button" class="fchip" role="radio" data-i="' + i + '">' + esc(f.key) + '</button>'; }).join('');
-      mark();
-    }
-    function mark() {
-      $$('.fchip', chipsEl).forEach(function (b) {
-        var on = +b.dataset.i === current;
-        b.setAttribute('aria-checked', String(on));
-        b.tabIndex = on ? 0 : -1;
+    function label() {
+      $$('.dcard', stack).forEach(function (el) {
+        var top = el.getAttribute('data-pos') === '0';
+        el.tabIndex = top ? 0 : -1;
+        el.setAttribute('role', 'button');
+        el.setAttribute('aria-hidden', String(!top));
+        el.setAttribute('aria-label', fill(t('card_a11y'), CHALLENGES[+el.getAttribute('data-i')].t[L()]));
       });
     }
-    function apply(i, animate) {
-      current = i;
-      var f = FILTERS[i];
-      $$('.fx', pair).forEach(function (g) { if (f) g.setAttribute('filter', 'url(#' + filterId(f.key) + ')'); else g.removeAttribute('filter'); });
-      $$('.fx-vig', pair).forEach(function (v) { v.style.opacity = f ? f.vig : 0; });
-      $$('.fx-lines', pair).forEach(function (v) { v.style.opacity = f && f.lines ? 1 : 0; });
-      nameEl.textContent = f ? f.key : t('fl_none').toUpperCase();
-      if (lang === 'ka' && !f) nameEl.textContent = t('fl_none');
-      lineEl.textContent = f ? f.line[L()] : t('fl_none_line');
-      var from = !f ? t('fl_none_from') : f.from != null ? CHALLENGES[f.from].t[L()] : f.fromText[L()];
-      fromEl.textContent = f ? '“' + from + '”' : from;
-      if (lang === 'ka' && f) fromEl.textContent = '„' + from + '“';
-      if (animate) { lineEl.classList.remove('is-swap'); void lineEl.offsetWidth; lineEl.classList.add('is-swap'); }
-      mark();
-    }
-    chipsEl.addEventListener('click', function (e) {
-      var b = e.target.closest('.fchip');
-      if (!b) return;
-      steered = true; clearInterval(auto);
-      apply(+b.dataset.i, true);
-    });
-    chipsEl.addEventListener('keydown', function (e) {
-      if (['ArrowRight', 'ArrowLeft', 'ArrowDown', 'ArrowUp'].indexOf(e.key) < 0) return;
-      e.preventDefault();
-      steered = true; clearInterval(auto);
-      var d = e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1 : -1;
-      var n = current + d;
-      if (n < -1) n = FILTERS.length - 1;
-      if (n >= FILTERS.length) n = -1;
-      apply(n, true);
-      $('.fchip[data-i="' + n + '"]', chipsEl).focus();
-    });
-    whileVisible(pair, function () {
-      if (steered || still) return;
-      auto = setInterval(function () { apply(current + 1 >= FILTERS.length ? 0 : current + 1, true); }, 3200);
-    }, function () { clearInterval(auto); });
-    onLanguage.push(function () { chips(); apply(current, false); });
-  })();
-
-  // ---------------------------------------------------------------------------
-  // The wall of prints (GalleryScreen's PrintWall), drifting.
-  // ---------------------------------------------------------------------------
-  (function wall() {
-    var cols = $$('#wall .wall__col');
-    function print(p) {
-      var hue = hueByName[p.hue];
-      var text = p.text ? p.text[L()] : CHALLENGES[p.t].t[L()];
-      var who = NAMES[p.who][L()];
-      var date = p.d[0] + ' ' + t('months')[p.d[1] - 1];
-      return '<div class="print" style="--hue:' + hue.base + ';--hue-ink:' + hue.ink + '">' +
-        '<div class="print__pair duo"><div class="duo__half photo">' + scene(p.a[0], p.a[1], p.fx) + '</div>' +
-        '<div class="duo__half photo">' + scene(p.b[0], p.b[1], p.fx) + '</div><div class="duo__seam"><i></i></div>' +
-        (p.r ? '<span class="print__react">' + p.r + '</span>' : '') + '</div>' +
-        '<p class="print__text">' + esc(text) + '</p><p class="print__meta">' + esc(who) + ' · ' + esc(date) + '</p></div>';
-    }
-    function render() {
-      var buckets = [[], [], []];
-      PRINTS.forEach(function (p, i) { buckets[i % 3].push(print(p)); });
-      cols.forEach(function (col, i) {
-        var html = buckets[i].join('');
-        col.innerHTML = html + html;
-      });
-    }
-    onLanguage.push(render);
-  })();
-
-  // ---------------------------------------------------------------------------
-  // A day of duos: quiet hours, and a duo every hour or two in between.
-  // ---------------------------------------------------------------------------
-  (function day() {
-    var marks = $('#dayMarks'), out = $('#dayCount');
-    var minus = $('#dayMinus'), plus = $('#dayPlus');
-    var count = 4;
-    var QUIET_END = 8 * 60, QUIET_START = 23 * 60;
-    var glows = ['#FF9A73', '#F5C66E', '#4FBF94', '#4DBCC0', '#8EA6FF', '#A596FF', '#D08BE6', '#F07FB0', '#C4D46E', '#FF8A8A'];
     function deal() {
-      var window_ = QUIET_START - QUIET_END - 10;
-      var gaps = [];
-      for (var i = 0; i < count - 1; i++) gaps.push(60 + Math.random() * 60);
-      var used = gaps.reduce(function (a, b) { return a + b; }, 0);
-      if (used > window_ - 60) { gaps = gaps.map(function (g) { return g * (window_ - 60) / used; }); used = window_ - 60; }
-      var at = QUIET_END + 60 + Math.random() * Math.min(60, window_ - used - 60);
-      var times = [Math.round(at)];
-      gaps.forEach(function (g) { at += g; times.push(Math.round(at)); });
-      var hues = shuffle(glows.slice());
-      marks.innerHTML = times.map(function (m, i) {
-        var hh = ('0' + Math.floor(m / 60)).slice(-2), mm = ('0' + (m % 60)).slice(-2);
-        return '<div class="dmark" style="left:' + (m / 1440 * 100).toFixed(3) + '%;--glow:' + hues[i] + ';--d:' + (i * 0.07) + 's">' +
-          '<span class="dmark__half"><svg viewBox="0 0 100 100"><path d="' + MARK_L + '" fill="' + hues[i] + '"/><path d="' + MARK_R + '" fill="' + hues[i] + '" opacity=".35"/></svg></span>' +
-          '<span class="dmark__time">' + hh + ':' + mm + '</span></div>';
-      }).join('');
-      marks.classList.toggle('is-dense', count >= 6);
-      out.textContent = String(count);
-      minus.disabled = count <= 1;
-      plus.disabled = count >= 10;
+      stack.innerHTML = '';
+      // make() slips each new card in underneath, so the top one is made first.
+      make(0); make(1); make(2);
+      label();
     }
-    minus.addEventListener('click', function () { if (count > 1) { count -= 1; deal(); } });
-    plus.addEventListener('click', function () { if (count < 10) { count += 1; deal(); } });
-    $('#dayShuffle').addEventListener('click', deal);
+    function next(dir) {
+      if (flying) return;
+      var top = $('.dcard[data-pos="0"]', stack);
+      if (!top) return;
+      flying = true;
+      var hadFocus = document.activeElement === top;
+      dir = dir || 1;
+      top.style.transition = 'transform .55s cubic-bezier(.3,.6,.3,1), opacity .45s ease';
+      top.style.transform = 'translate(' + dir * 125 + '%, -6%) rotate(' + dir * 22 + 'deg)';
+      top.style.opacity = '0';
+      $$('.dcard', stack).forEach(function (el) {
+        var p = +el.getAttribute('data-pos');
+        if (p > 0) el.setAttribute('data-pos', p - 1);
+      });
+      var fresh = make(3);
+      requestAnimationFrame(function () { requestAnimationFrame(function () { fresh.setAttribute('data-pos', 2); }); });
+      setTimeout(function () {
+        top.remove();
+        flying = false;
+        label();
+        if (hadFocus) { var now = $('.dcard[data-pos="0"]', stack); if (now) now.focus({ preventScroll: true }); }
+      }, still ? 0 : 480);
+    }
+
+    // Drag the top card aside, or tap it.
+    var drag = null;
+    stack.addEventListener('pointerdown', function (e) {
+      var top = e.target.closest('.dcard[data-pos="0"]');
+      if (!top || flying) return;
+      drag = { el: top, x: e.clientX, dx: 0, id: e.pointerId };
+      top.style.transition = 'none';
+    });
+    stack.addEventListener('pointermove', function (e) {
+      if (!drag || e.pointerId !== drag.id) return;
+      drag.dx = e.clientX - drag.x;
+      if (Math.abs(drag.dx) > 4 && !drag.captured) { drag.captured = true; try { drag.el.setPointerCapture(e.pointerId); } catch (x) {} }
+      drag.el.style.transform = 'translateX(' + drag.dx + 'px) rotate(' + drag.dx / 18 + 'deg)';
+    });
+    function release(e) {
+      if (!drag || e.pointerId !== drag.id) return;
+      var d = drag; drag = null;
+      if (Math.abs(d.dx) > 80) { next(d.dx > 0 ? 1 : -1); return; }
+      d.el.style.transition = '';
+      d.el.style.transform = '';
+      if (Math.abs(d.dx) < 6 && e.type === 'pointerup') next(1);
+    }
+    stack.addEventListener('pointerup', release);
+    stack.addEventListener('pointercancel', release);
+    stack.addEventListener('keydown', function (e) {
+      if (!e.target.classList.contains('dcard')) return;
+      if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowRight') { e.preventDefault(); next(1); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); next(-1); }
+    });
+
+    function levelLine() {
+      lineEl.textContent = level ? t({ EASY: 'lv_sweet_t', MEDIUM: 'lv_spicy_t', HARD: 'lv_deadly_t' }[level]) : t('lv_note');
+      $$('button', levelsEl).forEach(function (b) {
+        var on = b.getAttribute('data-level') === level;
+        b.setAttribute('aria-checked', String(on));
+      });
+    }
+    levelsEl.addEventListener('click', function (e) {
+      var b = e.target.closest('button');
+      if (!b) return;
+      var lv = b.getAttribute('data-level');
+      level = level === lv ? null : lv;
+      levelLine();
+      refill();
+      stack.style.opacity = '0';
+      setTimeout(function () { deal(); stack.style.opacity = ''; }, still ? 0 : 220);
+    });
+    stack.style.transition = 'opacity .22s ease';
+    refill();
+    onLanguage.push(function () {
+      $$('.dcard', stack).forEach(function (el) { el.innerHTML = cardHtml(CHALLENGES[+el.getAttribute('data-i')]); });
+      label();
+      levelLine();
+    });
     deal();
   })();
 
   // ---------------------------------------------------------------------------
-  // Scroll reveal
+  // The wall (GalleryScreen): prints hung in columns with every other one
+  // dropped, so neighbours never line up — a wall, not a table. Each sways
+  // on its nail when it's touched.
+  // ---------------------------------------------------------------------------
+  (function wall() {
+    var host = $('#prints'), width = 0;
+    var ROWS = 3;
+    function print(p, n) {
+      var hue = hueByName[p.hue];
+      var text = p.text ? p.text[L()] : CHALLENGES[p.t].t[L()];
+      var r = rng(n * 7919 + 13);
+      var tilt = ((r() - 0.5) * 2.6).toFixed(2);
+      return '<figure class="print" style="--hue:' + hue.base + ';--ink:' + hue.ink + ';--tilt:' + tilt + 'deg">' +
+        '<i class="print__nail" aria-hidden="true"></i><div class="print__body">' +
+        '<div class="print__pair"><div>' + scene(p.a[0], p.a[1], p.fx) + fxLayers(p.fx) + '</div><div>' + scene(p.b[0], p.b[1], p.fx) + fxLayers(p.fx) + '</div>' +
+        SEAM + (p.fx ? '<span class="print__fx">' + esc(p.fx) + '</span>' : '') + (p.r ? '<span class="print__react">' + p.r + '</span>' : '') + '</div>' +
+        '<figcaption><p class="print__text">' + esc(text) + '</p><p class="print__meta">' + esc(NAMES[p.who][L()]) + ' · ' + p.d[0] + ' ' + esc(t('months')[p.d[1] - 1]) + '</p></figcaption>' +
+        '</div></figure>';
+    }
+    function render() {
+      width = window.innerWidth;
+      var phone = width <= 600;
+      var cw = phone ? width * 0.43 : width <= 920 ? 230 : 252;
+      var gap = phone ? 14 : width <= 920 ? 32 : 48;
+      var cols = Math.ceil((width + gap) / (cw + gap));
+      // An odd count hangs a print dead centre; on a phone, an even one hangs two side by side.
+      if (cols % 2 !== (phone ? 0 : 1)) cols += 1;
+      var html = '';
+      for (var c = 0; c < cols; c++) {
+        html += '<div class="wall__col">';
+        for (var r = 0; r < ROWS; r++) {
+          var n = (c * ROWS + r + Math.floor(cols / 2) * 4) % PRINTS.length;
+          html += print(PRINTS[n], c * ROWS + r);
+        }
+        html += '</div>';
+      }
+      host.innerHTML = html;
+    }
+    function sway(body) {
+      if (still || body.getAnimations && body.getAnimations().length) return;
+      var tilt = parseFloat(body.parentNode.style.getPropertyValue('--tilt')) || 0;
+      var dir = Math.random() < 0.5 ? -1 : 1;
+      body.animate([0, 3.4, -2.6, 1.6, -0.9, 0.4, 0].map(function (a) { return { transform: 'rotate(' + (tilt + dir * a) + 'deg)' }; }),
+        { duration: 2200, easing: 'cubic-bezier(.3,.1,.3,1)' });
+    }
+    host.addEventListener('pointerover', function (e) {
+      var body = e.target.closest('.print__body');
+      if (body && e.pointerType === 'mouse' && !body.contains(e.relatedTarget)) sway(body);
+    });
+    host.addEventListener('click', function (e) {
+      var body = e.target.closest('.print__body');
+      if (body) sway(body);
+    });
+    var resizeTimer = null;
+    window.addEventListener('resize', function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function () { if (window.innerWidth !== width) render(); }, 200);
+    });
+    onLanguage.push(render);
+  })();
+
+  // ---------------------------------------------------------------------------
+  // The end (PoolArt): your half in your colour, an empty outline beside it,
+  // and the halves of everyone who could fill it drifting round. A pick lifts
+  // one, swoops it over and turns it into place; the mark is whole for a
+  // moment, a ring goes out in their colour, and it floats home again.
+  // ---------------------------------------------------------------------------
+  (function pool() {
+    var frame = $('#pool'), othersEl = $('#poolOthers'), markEl = $('#poolMark'), ring = $('.pool__ring', markEl);
+    var empty = $('.pool__empty', markEl);
+    // x and y as shares of the frame, size, quarter turns, colour.
+    var OTHERS = [
+      [0.12, 0.3, 1.15, 1, '#E8A33A'], [0.27, 0.78, 0.85, 3, '#22A273'], [0.33, 0.13, 0.7, 2, '#14787B'],
+      [0.69, 0.17, 0.8, 0, '#5A48C8'], [0.8, 0.72, 1.1, 2, '#9147A8'], [0.9, 0.3, 0.85, 1, '#B23A6F'],
+      [0.06, 0.74, 0.7, 0, '#4A68E8'], [0.63, 0.86, 0.65, 3, '#F2B8A6']
+    ];
+    othersEl.innerHTML = OTHERS.map(function (o, i) {
+      return '<div class="pool__other" data-c="' + o[4] + '" data-q="' + o[3] + '" style="left:' + o[0] * 100 + '%;top:' + o[1] * 100 + '%;--k:' + o[2] + ';--q:' + o[3] * 90 + 'deg;--c:' + o[4] +
+        '"><div class="pool__bob" style="--d:' + (4 + (i % 3) * 1.3) + 's;--dl:' + (-i * 0.9) + 's"><svg viewBox="0 0 50 100" aria-hidden="true"><path d="M0 0A50 50 0 0 1 0 100Z"/></svg></div></div>';
+    }).join('');
+    var others = $$('.pool__other', othersEl);
+    var order = [0, 4, 2, 5, 1, 3, 7, 6], k = 0, busy = false, auto = null;
+
+    function pick() {
+      if (busy) return;
+      busy = true;
+      var el = others[order[k % order.length]]; k++;
+      var colour = el.getAttribute('data-c');
+      ring.style.setProperty('--ring', colour);
+      if (still || !el.animate) {
+        empty.style.fill = colour; empty.style.strokeOpacity = '0';
+        frame.classList.add('is-full');
+        setTimeout(function () { empty.style.fill = ''; empty.style.strokeOpacity = ''; frame.classList.remove('is-full'); busy = false; }, 1800);
+        return;
+      }
+      var a = el.getBoundingClientRect(), m = markEl.getBoundingClientRect();
+      var dx = (m.left + m.width * 0.7475) - (a.left + a.width / 2);
+      var dy = (m.top + m.height * 0.55) - (a.top + a.height / 2);
+      var s = (m.width * 0.405) / a.width;
+      var q = +el.getAttribute('data-q') * 90;
+      var turn = 360 - q;
+      el.classList.add('is-picked');
+      var flight = el.animate([
+        { transform: 'translate(0,0) rotate(0deg) scale(1)' },
+        { transform: 'translate(0,-18px) rotate(' + (-12) + 'deg) scale(1.18)', offset: 0.2 },
+        { transform: 'translate(' + dx * 0.5 + 'px,' + (dy * 0.5 - Math.max(60, Math.abs(dx) * 0.22)) + 'px) rotate(' + turn * 0.6 + 'deg) scale(' + (1 + s) / 2 + ')', offset: 0.62 },
+        { transform: 'translate(' + dx + 'px,' + dy + 'px) rotate(' + turn + 'deg) scale(' + s + ')' }
+      ], { duration: 1250, easing: 'cubic-bezier(.45,0,.25,1)', fill: 'forwards' });
+      setTimeout(function () { frame.classList.add('is-full'); }, 1050);
+      flight.onfinish = function () {
+        markEl.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.07)' }, { transform: 'scale(1)' }], { duration: 520, easing: 'cubic-bezier(.3,.7,.3,1)' });
+        ring.animate([{ transform: 'scale(.95)', opacity: 0.9 }, { transform: 'scale(1.9)', opacity: 0 }], { duration: 1000, easing: 'cubic-bezier(.2,.7,.3,1)' });
+        var cx = m.left + m.width / 2, cy = m.top + m.height / 2;
+        others.forEach(function (o) {
+          if (o === el) return;
+          var r = o.getBoundingClientRect();
+          var ox = r.left + r.width / 2 - cx, oy = r.top + r.height / 2 - cy, len = Math.sqrt(ox * ox + oy * oy) || 1;
+          o.animate([{ transform: 'translate(0,0)' }, { transform: 'translate(' + ox / len * 16 + 'px,' + oy / len * 16 + 'px)' }, { transform: 'translate(0,0)' }],
+            { duration: 900, delay: Math.min(400, len * 0.5), easing: 'cubic-bezier(.3,.7,.3,1)' });
+        });
+        setTimeout(function () {
+          frame.classList.remove('is-full');
+          flight.reverse();
+          flight.onfinish = function () { flight.cancel(); el.classList.remove('is-picked'); busy = false; };
+        }, 1700);
+      };
+    }
+    function loop() { clearInterval(auto); auto = setInterval(pick, 5200); }
+    whileVisible(frame, function () { clearTimeout(auto); auto = setTimeout(function () { pick(); loop(); }, 900); }, function () { clearTimeout(auto); clearInterval(auto); });
+    frame.addEventListener('click', function () { pick(); loop(); });
+    frame.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(); loop(); } });
+  })();
+
+  // ---------------------------------------------------------------------------
+  // Things settle into place as they arrive.
   // ---------------------------------------------------------------------------
   (function reveal() {
     var els = $$('.reveal');

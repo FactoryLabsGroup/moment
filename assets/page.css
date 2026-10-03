@@ -1,19 +1,25 @@
-/* Moment — the quieter pages (privacy, support): same wall, same type, one column. */
+/* Moment — the quieter pages (privacy, support): the same wall, the same
+   type, one column, and one figure cut from a circle pressed into the top. */
 :root {
-  --canvas: #131212; --surface: #1B1A19; --raised: #242322; --control: #2E2D2B;
-  --hairline: rgba(255, 255, 255, .07); --border: rgba(255, 255, 255, .12);
-  --ink: #F4ECDD; --ink-2: #ABA59B; --ink-3: #7C776F; --ink-dark: #1A1411;
-  --persimmon: #E4633D; --cobalt: #4A68E8; --emerald: #22A273; --saffron: #E8A33A;
-  --g-ember: #FF9A73; --g-honey: #F5C66E;
+  --wall: #131212; --surface: #1B1A19; --raised: #242322; --control: #2E2D2B;
+  --hair: rgba(255, 255, 255, .07); --border: rgba(255, 255, 255, .12);
+  --ivory: #F4ECDD; --ink-2: #ABA59B; --ink-3: #7C776F; --faint: #5A5651; --dark: #1A1411;
+  --persimmon: #E4633D; --cobalt: #4A68E8; --emerald: #22A273; --saffron: #E8A33A; --plum: #9147A8;
   --serif: "Source Serif 4", "Noto Serif Georgian", ui-serif, Georgia, serif;
   --sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, "Noto Sans Georgian", "Helvetica Neue", Arial, sans-serif;
+  --mono: "JetBrains Mono", "Noto Sans Georgian", ui-monospace, "SF Mono", Menlo, monospace;
   color-scheme: dark;
 }
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
-body { margin: 0; background: var(--canvas); color: var(--ink); font: 17px/1.65 var(--sans); -webkit-font-smoothing: antialiased; }
-a { color: var(--g-honey); text-underline-offset: 3px; }
-:focus-visible { outline: 2px solid var(--g-honey); outline-offset: 3px; border-radius: 6px; }
+body { position: relative; margin: 0; background: var(--wall); color: var(--ivory); font: 17px/1.65 var(--sans); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+html[lang="ka"] body { font-family: "Noto Sans Georgian", var(--sans); }
+/* A circle sinking off the top corner, drawn inside the page so it never widens it. */
+body::before { content: ""; position: absolute; z-index: -1; right: 0; top: 0; width: 620px; height: 620px; max-width: 70vw; pointer-events: none; background: radial-gradient(circle 380px at 82% 12%, rgba(244, 236, 221, .035) 99.6%, transparent 100%); }
+a { color: var(--ivory); text-decoration-color: rgba(244, 236, 221, .4); text-underline-offset: 4px; }
+a:hover { text-decoration-color: currentColor; }
+:focus-visible { outline: 2px solid var(--saffron); outline-offset: 3px; border-radius: 6px; }
+::selection { background: var(--persimmon); color: var(--dark); }
 svg { display: block; }
 
 /* One language at a time. */
@@ -24,66 +30,73 @@ html[lang="en"] [lang="ka"].only, html[lang="ka"] [lang="en"].only { display: no
 .mark__r { fill: var(--cobalt); }
 
 .top { max-width: 760px; margin: 0 auto; padding: 22px 20px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-.wordmark { display: inline-flex; align-items: center; gap: .3em; text-decoration: none; color: var(--ink); font: 400 24px/1 var(--serif); }
+.wordmark { display: inline-flex; align-items: center; gap: .3em; text-decoration: none; color: var(--ivory); font: 400 24px/1 var(--serif); }
 .wordmark .mark { width: .82em; height: .82em; }
-.lang { display: flex; padding: 3px; border-radius: 999px; background: var(--surface); box-shadow: inset 0 0 0 1px var(--hairline); }
-.lang button { border: 0; background: none; cursor: pointer; padding: 6px 12px; border-radius: 999px; font: 600 13px/1 var(--sans); color: var(--ink-3); }
-.lang button[aria-pressed="true"] { background: var(--control); color: var(--ink); }
+.lang { display: flex; padding: 3px; border-radius: 999px; background: var(--surface); box-shadow: inset 0 0 0 1px var(--hair); }
+.lang button { border: 0; background: none; cursor: pointer; height: 30px; padding: 0 12px; border-radius: 999px; font: 500 12px/1 var(--mono); letter-spacing: .08em; color: var(--ink-3); }
+.lang button[lang="ka"] { font: 600 13px/1 "Noto Sans Georgian", var(--sans); letter-spacing: 0; }
+.lang button[aria-pressed="true"] { background: var(--control); color: var(--ivory); }
 
-main { max-width: 760px; margin: 0 auto; padding: 28px 20px 80px; }
-.back { display: inline-flex; gap: 6px; margin: 0 0 36px; color: var(--ink-2); text-decoration: none; font-size: 15px; }
-.back:hover { color: var(--ink); }
-.eyebrow { margin: 0 0 14px; font: 600 12px/1.2 var(--sans); letter-spacing: .14em; text-transform: uppercase; color: var(--ink-2); }
-html[lang="ka"] .eyebrow { text-transform: none; letter-spacing: .02em; font-size: 14px; }
-h1 { margin: 0; font: 400 clamp(38px, 6vw, 56px)/1.06 var(--serif); letter-spacing: -.02em; }
-html[lang="ka"] h1 { font-size: clamp(30px, 5vw, 44px); letter-spacing: 0; line-height: 1.25; }
-h1 em { font-style: italic; background: linear-gradient(100deg, var(--g-ember), var(--g-honey)); -webkit-background-clip: text; background-clip: text; color: transparent; padding-right: .06em; }
+main { max-width: 760px; margin: 0 auto; padding: 28px 20px 88px; }
+.back { display: inline-flex; gap: 6px; margin: 0 0 40px; color: var(--ink-2); text-decoration: none; font-size: 15px; }
+.back:hover { color: var(--ivory); }
+.eyebrow { margin: 0 0 18px; font: 500 12px/1.2 var(--mono); letter-spacing: .18em; text-transform: uppercase; color: var(--ink-2); }
+html[lang="ka"] .eyebrow { font: 500 14px/1.2 "Noto Sans Georgian", var(--sans); text-transform: none; letter-spacing: .02em; }
+h1 { margin: 0; font: 400 clamp(40px, 6.4vw, 62px)/1.02 var(--serif); letter-spacing: -.028em; text-wrap: balance; }
+h1 em { font-style: italic; color: var(--persimmon); }
+html[lang="ka"] h1 { font-size: clamp(30px, 5vw, 44px); font-weight: 500; letter-spacing: 0; line-height: 1.25; }
 html[lang="ka"] h1 em { font-style: normal; }
-.updated { margin: 16px 0 0; color: var(--ink-3); font-size: 15px; }
-.intro { margin: 28px 0 0; font-size: 19px; color: var(--ink-2); }
-.short { margin: 32px 0 0; padding: 22px 24px; border-radius: 24px; background: var(--surface); box-shadow: inset 0 0 0 1px var(--hairline); }
-.short p { margin: 0; color: var(--ink); }
-.short ul { margin: 12px 0 0; padding: 0; list-style: none; display: grid; gap: 8px; }
-.short li { display: flex; gap: 10px; color: var(--ink-2); }
-.short li::before { content: ""; flex: none; width: 8px; height: 8px; margin-top: .6em; border-radius: 50%; background: var(--emerald); }
+.updated { margin: 18px 0 0; color: var(--ink-3); font: 500 12px/1.2 var(--mono); letter-spacing: .12em; text-transform: uppercase; }
+html[lang="ka"] .updated { font: 400 15px/1.4 "Noto Sans Georgian", var(--sans); text-transform: none; letter-spacing: 0; }
+.intro { margin: 30px 0 0; font-size: 19px; color: var(--ink-2); }
+.short { margin: 36px 0 0; padding: 24px 26px; border-radius: 26px; background: var(--surface); box-shadow: inset 0 0 0 1px var(--hair); }
+.short p { margin: 0; color: var(--ivory); }
+.short ul { margin: 14px 0 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+.short li { display: flex; gap: 12px; color: var(--ink-2); }
+/* A half of the mark for a bullet. */
+.short li::before { content: ""; flex: none; width: 6px; height: 12px; margin-top: .5em; border-radius: 12px 0 0 12px; background: var(--persimmon); }
+.short li:nth-child(even)::before { border-radius: 0 12px 12px 0; background: var(--cobalt); margin-top: .62em; }
 
-h2 { margin: 52px 0 12px; font: 400 27px/1.2 var(--serif); letter-spacing: -.01em; }
-html[lang="ka"] h2 { font-size: 23px; line-height: 1.35; letter-spacing: 0; }
-h3 { margin: 26px 0 6px; font: 600 17px/1.4 var(--sans); }
+h2 { margin: 56px 0 12px; font: 400 28px/1.2 var(--serif); letter-spacing: -.012em; }
+html[lang="ka"] h2 { font-size: 23px; font-weight: 500; line-height: 1.4; letter-spacing: 0; }
+h3 { margin: 28px 0 6px; font: 600 17px/1.4 var(--sans); }
 p, li { color: var(--ink-2); }
-strong { color: var(--ink); font-weight: 600; }
+strong { color: var(--ivory); font-weight: 600; }
 ul.plain { padding-left: 20px; }
 ul.plain li { margin: 6px 0; }
 
-.table { margin: 16px 0; border-radius: 20px; overflow: hidden; box-shadow: inset 0 0 0 1px var(--hairline); }
-.row { display: grid; grid-template-columns: 1.1fr 1fr; gap: 20px; padding: 16px 20px; border-top: 1px solid var(--hairline); font-size: 15.5px; }
-.row:first-child { border-top: 0; background: var(--surface); font-weight: 600; color: var(--ink); }
+.table { margin: 16px 0; border-radius: 22px; overflow: hidden; box-shadow: inset 0 0 0 1px var(--hair); }
+.row { display: grid; grid-template-columns: 1.1fr 1fr; gap: 20px; padding: 16px 20px; border-top: 1px solid var(--hair); font-size: 15.5px; }
+.row:first-child { border-top: 0; background: var(--surface); font-weight: 600; color: var(--ivory); }
 .row > div { color: var(--ink-2); }
 .row > div strong { display: block; margin-bottom: 2px; }
 
-.contact { margin: 40px 0 0; padding: 26px; border-radius: 26px; background: var(--cobalt); color: var(--ink); position: relative; overflow: hidden; }
-.contact::after { content: ""; position: absolute; right: -60px; top: -60px; width: 200px; height: 200px; border-radius: 50%; background: rgba(244, 236, 221, .1); }
-.contact p { margin: 0; color: rgba(244, 236, 221, .82); position: relative; }
-.contact h2 { margin: 0 0 8px; position: relative; }
-.contact a { color: var(--ink); font-weight: 600; }
-.contact .big { display: inline-block; margin-top: 14px; font: 400 24px/1.2 var(--serif); position: relative; }
+/* The way to reach a person: plum, with a circle sinking off its corner. */
+.contact { position: relative; overflow: hidden; margin: 44px 0 0; padding: 28px; border-radius: 28px; background: var(--plum); color: var(--ivory); }
+.contact::after { content: ""; position: absolute; right: -70px; top: -70px; width: 220px; height: 220px; border-radius: 50%; background: var(--ivory); opacity: .08; }
+.contact p { position: relative; margin: 0; color: var(--ivory); }
+.contact h2 { position: relative; margin: 0 0 8px; }
+.contact a { position: relative; color: var(--ivory); font-weight: 600; }
+.contact .big { display: inline-block; margin-top: 14px; font: 400 26px/1.2 var(--serif); text-decoration-color: rgba(244, 236, 221, .5); }
 
-details { margin: 10px 0; border-radius: 20px; background: var(--surface); box-shadow: inset 0 0 0 1px var(--hairline); }
-details[open] { background: var(--raised); }
-summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 18px 20px; font: 400 19px/1.35 var(--serif); color: var(--ink); }
-html[lang="ka"] summary { font-size: 17px; line-height: 1.45; }
+details { box-shadow: inset 0 1px 0 var(--border); }
+details:last-of-type { box-shadow: inset 0 1px 0 var(--border), inset 0 -1px 0 var(--border); }
+summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 20px 0; font: 400 20px/1.35 var(--serif); color: var(--ivory); }
+html[lang="ka"] summary { font-size: 17px; font-weight: 500; line-height: 1.5; }
 summary::-webkit-details-marker { display: none; }
-summary::after { content: "+"; flex: none; display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--control); font: 400 18px/1 var(--sans); transition: transform .3s; }
-details[open] summary::after { transform: rotate(45deg); }
-details > div { padding: 0 20px 18px; }
+/* The mark, grey and shut; in colour, and parted, when open. */
+summary::after { content: ""; flex: none; width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(90deg, var(--faint) 0 45%, transparent 45% 55%, var(--faint) 55%); transition: transform .4s; }
+details[open] summary::after { background: linear-gradient(90deg, var(--persimmon) 0 45%, transparent 45% 55%, var(--cobalt) 55%); transform: rotate(180deg); }
+details > div { padding: 0 0 20px; }
 details > div p { margin: 0 0 10px; }
 
-footer { max-width: 760px; margin: 0 auto; padding: 28px 20px calc(36px + env(safe-area-inset-bottom)); border-top: 1px solid var(--hairline); display: flex; flex-wrap: wrap; gap: 10px 24px; font-size: 14px; color: var(--ink-3); }
+footer { max-width: 760px; margin: 0 auto; padding: 28px 20px calc(36px + env(safe-area-inset-bottom)); border-top: 1px solid var(--hair); display: flex; flex-wrap: wrap; gap: 10px 24px; font-size: 14px; color: var(--ink-3); }
 footer a { color: var(--ink-2); text-decoration: none; }
-footer a:hover { color: var(--ink); }
+footer a:hover { color: var(--ivory); }
 footer span { margin-left: auto; }
 
 @media (max-width: 560px) {
   .row { grid-template-columns: 1fr; gap: 6px; }
   footer span { margin-left: 0; width: 100%; }
+  .contact .big { font-size: 22px; }
 }
